@@ -1,0 +1,92 @@
+*{
+  margin:0;
+  padding:0;
+  font-family:sans-serif;
+}
+body{
+  background-color: aquamarine;
+}
+.title{
+text-align: center;
+}
+.inputcont{
+  text-align:center;
+  border-radius: 5px;
+  background-color: aqua; 
+  border-radius: 10px;
+  margin-left: 40%;
+  margin-right: 40%;
+  border-style:double;
+  
+}
+input{
+  margin: 5px;
+}
+.imge{
+  max-width:10px;
+    max-height:100px;
+    height: auto;
+    width: auto;
+   margin-left: 34%;
+   margin-bottom: 20%;
+  
+}
+.buttonReg{
+  margin-bottom: 20px;
+  font-size: larger;
+  margin-left: 20%;
+  margin-top:10px
+  
+}
+.cad{
+  margin-left: 10px;
+  font-size: small;
+}
+.inputtra{
+  border-radius: 5px;
+  background-color: aqua;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 20px;
+  border-style: solid;
+}
+.tri{
+  height: 40px;
+margin-left: 4px;
+}
+label{
+  margin-left: 10px;
+}
+.dor{
+  height: 40px;
+}
+.map{
+  height: 100vh;
+}
+.map-marker{
+  margin-top: -30px;
+}
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela th,
+.tabela td {
+  padding: 8px;
+  border: 1px solid #000000;
+  text-align: left;
+  background-color: #ececec;
+}
+
+.tabela th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+.naveg {
+  text-align: center;
+  background-color: rgb(142, 176, 176);
+  border-style: solid;
+  margin-bottom: 20px;
+}
+
