@@ -19,6 +19,15 @@ text-align: center;
   border-style:double;
   
 }
+.tria{
+  text-align:center;
+  border-radius: 5px;
+  background-color: aqua; 
+  border-radius: 10px;
+  margin-left: 40%;
+  margin-right: 40%;
+  border-style:double;
+}
 input{
   margin: 5px;
 }
@@ -88,5 +97,33 @@ label{
   background-color: rgb(142, 176, 176);
   border-style: solid;
   margin-bottom: 20px;
+}
+.MedTitle{
+  text-align: center;
+}
+.end{
+  text-align: start;
+}
+.medoptions{
+  text-align:center;
+  border-radius: 5px;
+  background-color: aqua; 
+  border-radius: 10px;
+  margin-left: 40%;
+  margin-right: 40%;
+  border-style:double;
+}
+.useroptions{
+  text-align:center;
+  border-radius: 5px;
+  background-color: aqua; 
+  border-radius: 10px;
+  margin-left: 40%;
+  margin-right: 40%;
+  border-style:double;
+
+}
+.descr{
+  height: 60px;
 }
 

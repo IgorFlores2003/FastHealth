@@ -11,6 +11,7 @@ const NavBar = () => {
             <button><Link to="/PacUser">TelaPac</Link></button>
             <button><Link to="/Hist">Hist</Link></button>
             <button><Link to="/Caixa">Caixa de Entrada</Link></button>
+            <button><Link to="/HistUser">Histórico Paciente</Link></button>
             </nav>
     );
 }
