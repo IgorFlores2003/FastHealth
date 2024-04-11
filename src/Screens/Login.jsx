@@ -1,6 +1,5 @@
 import img from "../Imagem/Logo.png";
 import React from "react";
-import "../index.css";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -20,7 +19,7 @@ const Login = () => {
           <input type="password" placeholder="Senha"></input>
           <br></br>
 
-          <button className="buttonReg">Login</button>
+          <button >Login</button>
           <Link to="/Cadastro" className="cad">
             Não Possuo uma conta ainda
           </Link>

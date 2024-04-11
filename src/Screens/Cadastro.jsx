@@ -51,21 +51,24 @@ function Cadastro() {
           </label>
           <br/>
           {tipoUsuario === 'medico' && (
-            <div><br/>
+            <div><div>
               <label className='nomehos'>Nome do Hospital:
               <input type="text" placeholder='Hospital'></input>
-              <br/>
               </label>
+              </div>
+              <div>
               <label className='end'>Endereço do Hospital:
               <input type="text" placeholder='Endereço'></input>
               </label>
-              <label>CRM</label>
-              <input type='text' placeholder='Inserir'></input>
-            </div>
+              </div>
+              <div>
+              <label>CRM:</label>
+              <input type='text' placeholder='Inserir CRM'></input>
+            </div></div>
           )}
           {tipoUsuario === 'paciente' && (
             <div><br/>
-              <label>CPF</label>
+              <label>CPF:</label>
               <input type="cpf" placeholder="CPF" />
               <br />
             </div>
