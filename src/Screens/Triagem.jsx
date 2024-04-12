@@ -6,6 +6,12 @@ function Triagem() {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
+
+  const [diasValue, setdiasValue] = useState("");
+
+  const InputChange = (event) =>{
+    setdiasValue(event.target.value);
+  }
   return (
     <div className="tria">
       <h1 className="title">Coleta de Dados do Paciente</h1>
@@ -36,50 +42,77 @@ function Triagem() {
           </label>
         </div>
         <div>
+        <br></br>
           <label className="op2">
             Há quanto tempo está com Dor/Incomodo?:
-            
-            <input type="text"></input>
+            <br></br>
+            <input className="dor_Incomodo" type="text" maxlength="2" size="1"></input>
+            <input
+            type="text"
+            value={diasValue}
+            onChange={InputChange}
+            list="tempo"
+            placeholder="Escolha uma opção"
+          />
+          <datalist id="tempo">
+            <option value="Dias" />
+            <option value="Semanas" />
+            <option value="Meses" />
+            <option value="Anos" />
+          </datalist>
             
           </label>
         </div>
         <div>
+        <br></br>
           <label>
             Qual a Intencidade da Dor?
-            
+            <br></br>
             <input type="radio" name="myradio" value="option1" />
-            0-4
+            😊Sem dor
           </label>
           <label>
             <input type="radio" name="myradio" value="option2" />
-            5-6
+            🙂 Dor leve
           </label>
-          {" "}
           <label>
             <input type="radio" name="myradio" value="option3" />
-            7-8
+            😐Dor moderada
+          </label>
+          <label>
+            <br></br>
+            <input type="radio" name="myradio" value="option4" />
+            🙁Dor intensa
           </label>
           <label>
             <input type="radio" name="myradio" value="option4" />
-            9-10
+            😟Dor muito intensa
           </label>
-          
+          <label>
+            <input type="radio" name="myradio" value="option4" />
+            😣Pior dor possível
+          </label>
         </div>
         <div>
+        <br></br>
           <label>
             Pressão Arterial:
-            <input type="number"></input>
-            <input type="number"></input>
+            <br></br>
+            <input  type="text" maxlength="2" size="1"></input>
+            X
+            <input type="text" maxlength="2" size="1"></input>
           </label>
-          
         </div>
         <div>
+        <br></br>
           <label>
-            Temperatura:
-            <input type="number"></input>
+            Temperatura:<br></br>
+            <input type="text" maxlength="2" size="1"></input>
+            Graus
           </label>
         </div>
         <div>
+        <br></br>
           <label>Qual hospital irá ser atendido?:</label>
           <input
             type="text"
@@ -96,10 +129,12 @@ function Triagem() {
           
         </div>
         <div>
+        <br></br>
           <label>Descrição (Opcional):</label>
           <input
             type="text"
             placeholder="Descreva mais detalhadamente o que está sentindo"
+            maxlength="100" size="50" 
           ></input>
         </div>
         <button className="buttonReg">Finalizar</button>

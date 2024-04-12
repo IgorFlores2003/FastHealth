@@ -4,6 +4,7 @@ import "../index.css";
 const NavBar = () => {
   return (
     <nav className="naveg">
+      <div className="links">
       <button>
         <Link to="/">Login</Link>
       </button>
@@ -28,6 +29,7 @@ const NavBar = () => {
       <button>
         <Link to="/HistUser">Histórico Paciente</Link>
       </button>
+      </div>
     </nav>
   );
 };

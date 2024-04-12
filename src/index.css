@@ -17,7 +17,6 @@ text-align: center;
   margin-left: 40%;
   margin-right: 40%;
   border-style:double;
-  
 }
 .tria{
   border-radius: 5px;
@@ -33,13 +32,11 @@ input{
   margin: 5px;
 }
 .imge{
-  max-width:10px;
-    max-height:100px;
-    height: auto;
-    width: auto;
+  max-width:5px;
+   max-height:90px;
    margin-left: 34%;
    margin-bottom: 20%;
-  
+   margin-top:5px;
 }
 .cad{
   margin-left: 10px;
@@ -237,7 +234,6 @@ link{
   background-color: #02c3ea; 
   border-style: solid;
   border-radius: 5px;
-  color: rgb(0, 0, 0);
   padding: 5px 10px;
   text-decoration: none;
   display: inline-block;
@@ -251,7 +247,6 @@ link{
   background-color: #00a1a9; 
   border-style: solid;
   border-radius: 5px;
-  color: rgb(255, 255, 255);
   padding: 10px 20px;
   text-align: center;
   display: inline-block;
@@ -260,4 +255,10 @@ link{
   transition-duration: 0.4s;
   cursor: pointer;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
+}
+.crm{
+  margin-left: 32px;
+}
+.dor_Incomodo{
+size: 30px;
 }

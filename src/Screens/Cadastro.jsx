@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import img from "../Imagem/Logo.png";
 import "../index.css";
-
 function Cadastro() {
   const [tipoUsuario, setTipoUsuario] = useState(); // estado para eu controlar o tipo de usuário
 
@@ -52,24 +51,22 @@ function Cadastro() {
           <br/>
           {tipoUsuario === 'medico' && (
             <div><div>
-              <label className='nomehos'>Nome do Hospital:
-              <input type="text" placeholder='Hospital'></input>
-              </label>
+              <label >Hospital:</label>
+              <input type="text" placeholder=' Nome do Hospital'></input>
               </div>
               <div>
-              <label className='end'>Endereço do Hospital:
-              <input type="text" placeholder='Endereço'></input>
-              </label>
+              <label>Endereço:</label>
+              <input type="text" placeholder='Endereço do Hospital'></input>
               </div>
               <div>
-              <label>CRM:</label>
-              <input type='text' placeholder='Inserir CRM'></input>
+              <label >CRM:</label>
+              <input className='crm' type='text' placeholder='Inserir CRM'></input>
             </div></div>
           )}
           {tipoUsuario === 'paciente' && (
             <div><br/>
               <label>CPF:</label>
-              <input type="cpf" placeholder="CPF" />
+              <input type="text" id="cpf" name="cpf" placeholder="CPF" maxLength={11}/>
               <br />
             </div>
           )}
@@ -78,6 +75,8 @@ function Cadastro() {
         </form>
       </div>
     </div>
+
+    
   );
 }
 
