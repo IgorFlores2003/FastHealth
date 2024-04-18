@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Local from "@react-native-community/geolocation";
+import Geolocation from "react-native-geolocation-service";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 function Maps() {
@@ -8,15 +8,16 @@ function Maps() {
     googleMapsApiKey: "AIzaSyA83zbSFogndgXQSf9w2SlsT9moRgGnC7E",
   });
   const position = {
-    lat: -22.15408470912674,
-    lng: -46.04275308934624,
+    lat: -22.219769971209377,
+    lng: -45.91594182571526,
   };
+
   return (
     <div className="map">
       {isLoaded ? (
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "100%" }}
-          center={{ lat: -22.15408470912674, lng: -46.04275308934624 }}
+          center={{ lat: -22.219769971209377, lng: -45.91594182571526 }}
           zoom={17}
           options={{
             styles: [

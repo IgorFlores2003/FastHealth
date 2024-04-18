@@ -1,24 +1,14 @@
 import React, { useState } from "react";
 
 function Triagem() {
-  const [inputValue, setInputValue] = useState("");
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const [diasValue, setdiasValue] = useState("");
-
-  const InputChange = (event) =>{
-    setdiasValue(event.target.value);
-  }
   return (
     <div className="tria">
       <h1 className="title">Coleta de Dados do Paciente</h1>
       <form>
         <div className="op1">
           <label>
-            Onde Está Doendo:<br></br>
+            Onde está doendo?<br></br>
             <input type="radio" name="radio" value="option1" />
             Cabeça
           </label>
@@ -26,7 +16,7 @@ function Triagem() {
             <input type="radio" name="radio" value="option2" />
             Olhos
           </label>
-          
+
           <label>
             <input type="radio" name="radio" value="option3" />
             Braços
@@ -35,38 +25,36 @@ function Triagem() {
             <input type="radio" name="radio" value="option4" />
             Pernas
           </label>
-          
+
           <label>
             Outro:
             <input type="text" />
           </label>
         </div>
         <div>
-        <br></br>
+          <br></br>
           <label className="op2">
-            Há quanto tempo está com Dor/Incomodo?:
+            Há quanto tempo está com dor/incômodo?
             <br></br>
-            <input className="dor_Incomodo" type="text" maxlength="2" size="1"></input>
             <input
-            type="text"
-            value={diasValue}
-            onChange={InputChange}
-            list="tempo"
-            placeholder="Escolha uma opção"
-          />
-          <datalist id="tempo">
-            <option value="Dias" />
-            <option value="Semanas" />
-            <option value="Meses" />
-            <option value="Anos" />
-          </datalist>
-            
+              className="dor_Incomodo"
+              type="text"
+              maxlength="2"
+              size="1"
+            ></input>
+            <select id="tempo">
+            <option value="Horas" >Horas</option>
+              <option value="Dias" >Dias</option>
+              <option value="Semanas" >Semanas</option>
+              <option value="Meses" >Meses</option>
+              <option value="Anos" >Anos</option>
+            </select>
           </label>
         </div>
         <div>
-        <br></br>
+          <br></br>
           <label>
-            Qual a Intencidade da Dor?
+            Qual a intensidade da dor?
             <br></br>
             <input type="radio" name="myradio" value="option1" />
             😊Sem dor
@@ -94,17 +82,16 @@ function Triagem() {
           </label>
         </div>
         <div>
-        <br></br>
+          <br></br>
           <label>
             Pressão Arterial:
             <br></br>
-            <input  type="text" maxlength="2" size="1"></input>
-            X
+            <input type="text" maxlength="2" size="1"></input>X
             <input type="text" maxlength="2" size="1"></input>
           </label>
         </div>
         <div>
-        <br></br>
+          <br></br>
           <label>
             Temperatura:<br></br>
             <input type="text" maxlength="2" size="1"></input>
@@ -112,29 +99,23 @@ function Triagem() {
           </label>
         </div>
         <div>
-        <br></br>
-          <label>Qual hospital irá ser atendido?:</label>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            list="options"
-            placeholder="Escolha uma opção"
-          />
-          <datalist id="options">
-            <option value="Hospital 1" />
-            <option value="Hospital 2" />
-            <option value="Hospital 3" />
-          </datalist>
-          
+          <br></br>
+          <label>Qual hospital irá ser atendido?</label>
+          <br></br>
+          <select className="selectOp" id="options" >
+            <option value="Hospital 1" >Hospital 1</option>
+            <option value="Hospital 2" >Hospital 2</option>
+            <option value="Hospital 3" >Hospital 3</option>
+          </select>
         </div>
         <div>
-        <br></br>
+          <br></br>
           <label>Descrição (Opcional):</label>
           <input
             type="text"
             placeholder="Descreva mais detalhadamente o que está sentindo"
-            maxlength="100" size="50" 
+            maxlength="100"
+            size="50"
           ></input>
         </div>
         <button className="buttonReg">Finalizar</button>
