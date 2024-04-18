@@ -2,16 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import Cadastro from "./Screens/Cadastro.jsx";
-import Login from "./Screens/Login.jsx";
-import ErrorPage from "./Screens/ErrorPage.jsx";
-import Triagem from "./Screens/Triagem.jsx";
-import Maps from "./Screens/Maps.jsx";
-import Med from "./Screens/Med.jsx";
-import User from "./Screens/User.jsx";
-import Hist from "./Screens/Hist.jsx";
-import Caixa from "./Screens/Caixa.jsx";
-import HistPac from "./Screens/HistPac.jsx";
+import Cadastro from "./frontend/Screens/Cadastro.js";
+import Login from "./frontend/Screens/Login.js";
+import ErrorPage from "./frontend/Screens/ErrorPage.js";
+import Triagem from "./frontend/Screens/Triagem.js";
+import Maps from "./frontend/Screens/Maps.js";
+import Med from "./frontend/Screens/Med.js";
+import User from "./frontend/Screens/User.js";
+import Hist from "./frontend/Screens/Hist.js";
+import Caixa from "./frontend/Screens/Caixa.js";
+import HistPac from "./frontend/Screens/HistPac.js";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -26,8 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/Cadastro",
-        element: <Cadastro />,
-      },
+        element: <Cadastro />,                                  },
       { path: "/Triagem", element: <Triagem /> },
       { path: "/Hospitais", element: <Maps /> },
       { path: "/MedUser", element: <Med /> },
