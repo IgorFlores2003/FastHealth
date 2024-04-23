@@ -1,39 +1,79 @@
 import React, { useState } from "react";
-import img from "./Imagem/Logo.png";
+import img from "../Screens/Imagem/Logo.png";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { cpf } from "cpf-cnpj-validator";
+import Swal from 'sweetalert2';
 
 function Cadastro() {
-  const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-    hospital: "",
-    endereco: "",
-    crm: "",
-    cpf: ""
+  const navigate = useNavigate();
+
+  const [userForm, setUserForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    hospital: '',
+    endereco: '',
+    crm: '',
+    cpf: ''
   });
 
-  const [tipoUsuario, setTipoUsuario] = useState(""); // estado para controlar o tipo de usuário
+  const [tipoUsuario, setTipoUsuario] = useState(); 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const handleTipoUsuarioChange = (event) => {
-    setTipoUsuario(event.target.value); // atualiza o estado com o valor selecionado
+    setUserForm({ ...userForm, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/', formValues);
+      
+      const emailResponse = await axios.get(`http://localhost:8080/?email=${userForm.email}`);
+      const existingEmail = emailResponse.data.find(user => user.email === userForm.email);
+      if (existingEmail) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Email já cadastrado!',
+          text: 'O email informado já está cadastrado. Por favor, utilize outro email.'
+        });
+        return; 
+      }
 
-      console.log('Resposta da API:', response.data);
-      // Limpar o formulário após o envio bem-sucedido (opcional)
-      setFormValues({
+      
+      const senhaResponse = await axios.get(`http://localhost:8080/?password=${userForm.password}`);
+      const existingPassword = senhaResponse.data.find(user => user.password === userForm.password);
+      if (existingPassword) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Senha já cadastrada!',
+          text: 'A senha informada já está cadastrada. Por favor, utilize outra senha.'
+        });
+        return; 
+      }
+
+      const cpfResponse = await axios.get(`http://localhost:8080/?cpf=${userForm.cpf}`);
+      const existingCPF = cpfResponse.data.find(user => user.cpf === userForm.cpf);
+      if (existingCPF) {
+        Swal.fire({
+          icon: 'error',
+          title: 'CPF já cadastrado!',
+          text: 'O CPF informado já está cadastrado. Por favor, utilize outro CPF.'
+        });
+        return; 
+      }
+        const crmResponse = await axios.get(`http://localhost:8080/?crm=${userForm.crm}`);
+        const existingCRM = crmResponse.data.find(user => user.crm === userForm.crm);
+        if (existingCRM) {
+          Swal.fire({
+            icon: 'error',
+            title: 'CRM já cadastrado!',
+            text: 'O CRM informado já está cadastrado. Por favor, utilize outro CRM.'
+          });
+          return; 
+        }
+      await axios.post('http://localhost:8080/', userForm);
+      setUserForm({
         name: '',
         email: '',
         password: '',
@@ -42,12 +82,31 @@ function Cadastro() {
         crm: '',
         cpf: ''
       });
-      
-      // Adicione aqui qualquer lógica adicional após o envio bem-sucedido
+
+      // Exibir mensagem de sucesso
+      Swal.fire({
+        icon: 'success',
+        title: 'Cadastro Efetuado com Sucesso',
+        text: 'Seja bem-vindo ao Fast Health!'
+      });
+
+      // Redirecionar o usuário para a página inicial após o cadastro
+      navigate("/");
+
     } catch (error) {
-      console.error('Erro ao enviar formulário:', error);
-      // Adicione aqui o tratamento de erro, se necessário
+      console.error('Erro ao realizar cadastro:', error);
+
+      // Exibir mensagem de erro em caso de falha no cadastro
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro ao Cadastrar',
+        text: 'Ocorreu um erro ao cadastrar. Por favor, tente novamente.'
+      });
     }
+  };
+
+  const handleTipoUsuarioChange = (e) => {
+    setTipoUsuario(e.target.value); // atualiza o estado com o valor que for selecionado
   };
 
   return (
@@ -59,36 +118,15 @@ function Cadastro() {
         <h1 className="title">Cadastro</h1>
         <form onSubmit={handleSubmit}>
           <label>Nome:</label>
-          <input
-            type="text"
-            placeholder="Nome"
-            required
-            name="name"
-            value={formValues.name}
-            onChange={handleInputChange}
-          />
+          <input type="text" name="name" placeholder="Nome" required value={userForm.name} onChange={handleInputChange} />
           <br />
 
           <label>E-mail:</label>
-          <input
-            type="email"
-            placeholder="E-mail"
-            required
-            name="email"
-            value={formValues.email}
-            onChange={handleInputChange}
-          />
+          <input type="email" name="email" placeholder="E-mail" required value={userForm.email} onChange={handleInputChange} />
           <br />
 
           <label>Senha:</label>
-          <input
-            type="password"
-            placeholder="Senha"
-            required
-            name="password"
-            value={formValues.password}
-            onChange={handleInputChange}
-          />
+          <input type="password" name="password" placeholder="Senha" required value={userForm.password} onChange={handleInputChange} />
           <br />
 
           <label>
@@ -115,63 +153,29 @@ function Cadastro() {
 
           {tipoUsuario === "medico" && (
             <div>
-              <div>
-                <label>Hospital:</label>
-                <input
-                  type="text"
-                  placeholder="Nome do Hospital"
-                  required
-                  name="hospital"
-                  value={formValues.hospital}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>Endereço:</label>
-                <input
-                  type="text"
-                  placeholder="Endereço do Hospital"
-                  required
-                  name="endereco"
-                  value={formValues.endereco}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label>CRM:</label>
-                <input
-                  className="crm"
-                  type="text"
-                  placeholder="Inserir CRM"
-                  required
-                  name="crm"
-                  value={formValues.crm}
-                  onChange={handleInputChange}
-                />
-              </div>
+              <label>Hospital:</label>
+              <input type="text" name="hospital" placeholder="Nome do Hospital" required value={userForm.hospital} onChange={handleInputChange} />
+              <br />
+
+              <label>Endereço:</label>
+              <input type="text" name="endereco" placeholder="Endereço do Hospital" required value={userForm.endereco} onChange={handleInputChange} />
+              <br />
+
+              <label>CRM:</label>
+              <input type="text" name="crm" className="crm" placeholder="Inserir CRM" required value={userForm.crm} onChange={handleInputChange} />
+              <br />
             </div>
           )}
 
           {tipoUsuario === "paciente" && (
             <div>
-              <br />
               <label>CPF:</label>
-              <input
-                type="text"
-                id="cpf"
-                name="cpf"
-                placeholder="CPF"
-                maxLength={11}
-                value={formValues.cpf}
-                onChange={handleInputChange}
-              />
+              <input type="text" name="cpf" id="cpf" placeholder="CPF" maxLength={11} value={userForm.cpf} onChange={handleInputChange} />
               <br />
             </div>
           )}
 
-          <button className="buttonReg" type="submit">
-            Registrar
-          </button>
+          <button className="buttonReg" type="submit">Registrar</button>
         </form>
       </div>
     </div>

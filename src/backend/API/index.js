@@ -6,15 +6,31 @@ const app = express()
 app.use(cors());
 app.use(express.json())
 const port = 8080
+
 const User = mongoose.model('User' , 
+{dorCabe:,
+duration: "",
+painIntensity: "",
+Pressure: "",
+temperature: "",
+hospital: "",
+description: ""
+
+});
+
+const Triagem = mongoose.model('Tria' , 
 {name:String,
  email:String,
  password:String,
  hospital:String,
  endereco:String,
  crm:Number,
- cpf:Number
+ cpf:Number,
+ userType: { type: String, enum: ['medico', 'paciente']},
+
 });
+
+
 
 app.put("/:id", async(req, res) =>{
     const user = await User.findByIdAndUpdate(req.params.id, {
@@ -24,7 +40,8 @@ app.put("/:id", async(req, res) =>{
         hospital: req.body.hospital,
         endereco: req.body.endereco,
         crm: req.body.crm,
-        cpf: req.body.cpf
+        cpf: req.body.cpf,
+        tipo:req.body.tipoUsu
     }, {
         new: true
     })
@@ -49,12 +66,30 @@ app.post("/" , async (req, res) =>{
     hospital: req.body.hospital,
     endereco: req.body.endereco,
     crm: req.body.crm,
-    cpf: req.body.cpf
+    cpf: req.body.cpf,
+    tipo:req.body.tipoUsu
    })
+
 
    await user.save()
    return res.send(user)
 })
+
+app.post("/" , async (req, res) =>{
+    const user = new User ({
+        Pain: "",
+        duration: "",
+        painIntensity: "",
+        Pressure: "",
+        temperature: "",
+        hospital: "",
+        description: ""
+    })
+ 
+ 
+    await user.save()
+    return res.send(user)
+ })
 
 app.listen(port, () => {
     mongoose.connect('mongodb+srv://IgorFlores:agua3006@fasthelth.iq0umfk.mongodb.net/?retryWrites=true&w=majority&appName=FastHelth')
