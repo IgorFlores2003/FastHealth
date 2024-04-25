@@ -14,65 +14,68 @@ function Cadastro() {
     hospital: '',
     endereco: '',
     crm: '',
-    cpf: ''
+    cpf: '',
+    tipoUsuario: '' 
   });
-
-  const [tipoUsuario, setTipoUsuario] = useState(); 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserForm({ ...userForm, [name]: value });
+
+    console.log(userForm)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
+      try {
       
-      const emailResponse = await axios.get(`http://localhost:8080/?email=${userForm.email}`);
-      const existingEmail = emailResponse.data.find(user => user.email === userForm.email);
-      if (existingEmail) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Email já cadastrado!',
-          text: 'O email informado já está cadastrado. Por favor, utilize outro email.'
-        });
-        return; 
-      }
-
-      
-      const senhaResponse = await axios.get(`http://localhost:8080/?password=${userForm.password}`);
-      const existingPassword = senhaResponse.data.find(user => user.password === userForm.password);
-      if (existingPassword) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Senha já cadastrada!',
-          text: 'A senha informada já está cadastrada. Por favor, utilize outra senha.'
-        });
-        return; 
-      }
-
-      const cpfResponse = await axios.get(`http://localhost:8080/?cpf=${userForm.cpf}`);
-      const existingCPF = cpfResponse.data.find(user => user.cpf === userForm.cpf);
-      if (existingCPF) {
-        Swal.fire({
-          icon: 'error',
-          title: 'CPF já cadastrado!',
-          text: 'O CPF informado já está cadastrado. Por favor, utilize outro CPF.'
-        });
-        return; 
-      }
-        const crmResponse = await axios.get(`http://localhost:8080/?crm=${userForm.crm}`);
-        const existingCRM = crmResponse.data.find(user => user.crm === userForm.crm);
-        if (existingCRM) {
+        const emailResponse = await axios.get(`http://localhost:8080/?email=${userForm.email}`);
+        const existingEmail = emailResponse.data.find(user => user.email === userForm.email);
+        if (existingEmail) {
           Swal.fire({
             icon: 'error',
-            title: 'CRM já cadastrado!',
-            text: 'O CRM informado já está cadastrado. Por favor, utilize outro CRM.'
+            title: 'Email já cadastrado!',
+            text: 'O email informado já está cadastrado. Por favor, utilize outro email.'
           });
           return; 
         }
+  
+        
+        const senhaResponse = await axios.get(`http://localhost:8080/?password=${userForm.password}`);
+        const existingPassword = senhaResponse.data.find(user => user.password === userForm.password);
+        if (existingPassword) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Senha já cadastrada!',
+            text: 'A senha informada já está cadastrada. Por favor, utilize outra senha.'
+          });
+          return; 
+        }
+  
+        const cpfResponse = await axios.get(`http://localhost:8080/?cpf=${userForm.cpf}`);
+        const existingCPF = cpfResponse.data.find(user => user.cpf === userForm.cpf);
+        if (existingCPF) {
+          Swal.fire({
+            icon: 'error',
+            title: 'CPF já cadastrado!',
+            text: 'O CPF informado já está cadastrado. Por favor, utilize outro CPF.'
+          });
+          return; 
+        }
+          const crmResponse = await axios.get(`http://localhost:8080/?crm=${userForm.crm}`);
+          const existingCRM = crmResponse.data.find(user => user.crm === userForm.crm);
+          if (existingCRM) {
+            Swal.fire({
+              icon: 'error',
+              title: 'CRM já cadastrado!',
+              text: 'O CRM informado já está cadastrado. Por favor, utilize outro CRM.'
+            });
+            return; 
+          }
+
       await axios.post('http://localhost:8080/', userForm);
+
       setUserForm({
         name: '',
         email: '',
@@ -80,34 +83,28 @@ function Cadastro() {
         hospital: '',
         endereco: '',
         crm: '',
-        cpf: ''
+        cpf: '',
+        tipoUsuario: userForm.tipoUsuario  // Garante que o tipoUsuario seja mantido para o próximo cadastro
       });
 
-      // Exibir mensagem de sucesso
       Swal.fire({
         icon: 'success',
         title: 'Cadastro Efetuado com Sucesso',
         text: 'Seja bem-vindo ao Fast Health!'
       });
 
-      // Redirecionar o usuário para a página inicial após o cadastro
       navigate("/");
 
     } catch (error) {
       console.error('Erro ao realizar cadastro:', error);
 
-      // Exibir mensagem de erro em caso de falha no cadastro
       Swal.fire({
         icon: 'error',
         title: 'Erro ao Cadastrar',
         text: 'Ocorreu um erro ao cadastrar. Por favor, tente novamente.'
       });
     }
-  };
-
-  const handleTipoUsuarioChange = (e) => {
-    setTipoUsuario(e.target.value); // atualiza o estado com o valor que for selecionado
-  };
+  }
 
   return (
     <div className="container">
@@ -115,7 +112,7 @@ function Cadastro() {
         <img src={img} alt="Logo" />
       </div>
       <div className="inputcont">
-        <h1 className="title">Cadastro</h1>
+        <h1 className="title ">Cadastro</h1>
         <form onSubmit={handleSubmit}>
           <label>Nome:</label>
           <input type="text" name="name" placeholder="Nome" required value={userForm.name} onChange={handleInputChange} />
@@ -134,8 +131,8 @@ function Cadastro() {
               type="radio"
               name="tipoUsuario"
               value="medico"
-              checked={tipoUsuario === "medico"}
-              onChange={handleTipoUsuarioChange}
+              checked={userForm.tipoUsuario === "medico"}
+              onChange={handleInputChange}
             />
             Médico
           </label>
@@ -144,14 +141,14 @@ function Cadastro() {
               type="radio"
               name="tipoUsuario"
               value="paciente"
-              checked={tipoUsuario === "paciente"}
-              onChange={handleTipoUsuarioChange}
+              checked={userForm.tipoUsuario === "paciente"}
+              onChange={handleInputChange}
             />
             Paciente
           </label>
           <br />
 
-          {tipoUsuario === "medico" && (
+          {userForm.tipoUsuario === "medico" && (
             <div>
               <label>Hospital:</label>
               <input type="text" name="hospital" placeholder="Nome do Hospital" required value={userForm.hospital} onChange={handleInputChange} />
@@ -167,7 +164,7 @@ function Cadastro() {
             </div>
           )}
 
-          {tipoUsuario === "paciente" && (
+          {userForm.tipoUsuario === "paciente" && (
             <div>
               <label>CPF:</label>
               <input type="text" name="cpf" id="cpf" placeholder="CPF" maxLength={11} value={userForm.cpf} onChange={handleInputChange} />

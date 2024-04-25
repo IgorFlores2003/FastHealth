@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const HistPac = () => {
   const navigate = useNavigate(); // Usando useNavigate para obter a função de navegação

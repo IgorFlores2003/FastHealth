@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import NavBarMed from "../../components/NavBarMed/index";
 
 const Caixa = () => {
     const dados = [
@@ -18,6 +19,7 @@ const redirectToNewPage = () => {
 
     return (
       <div> 
+        <NavBarMed/>
         <h1>Caixa de Entrada</h1>
       <table className="tabelaCaixa">
         <thead>

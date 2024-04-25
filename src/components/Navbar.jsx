@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import "../index.css";
+import { FaHouseUser } from "react-icons/fa";
+
 
 const NavBar = () => {
   return (
     <nav className="naveg">
+      
       <div className="links">
         <button>
-          <Link to="/">Login</Link>
+          <Link to="/"><FaHouseUser /></Link>
         </button>
         <button>
           <Link to="/Triagem">Triagem</Link>

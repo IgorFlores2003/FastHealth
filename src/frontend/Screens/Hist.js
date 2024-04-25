@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import NavBarMed from "../../components/NavBarMed";
 
 const Hist = () => {
   
@@ -16,6 +17,7 @@ const Hist = () => {
     
     return (
       <div>
+        <NavBarMed/>
       <h1>Histórico Por Paciente</h1>
       <table className="tabelaHis">
         <thead>

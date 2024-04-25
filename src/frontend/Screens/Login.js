@@ -52,7 +52,9 @@ function Login() {
                 title: 'Login Efetuado',
                 text: `Login bem-sucedido! Bem-vindo, ${userName}!`
               });
-              navigate(user.userType === 'medico' ? "/Meduser" : "/Pacuser");
+              navigate(user.tipoUsuario === 'medico' ? "/Meduser" : "/Pacuser");
+              const usuarioLogado = user.email
+              console.log(usuarioLogado)
               break; // Para o loop ao encontrar um usuário autenticado
             } else {
               // Senha incorreta para o email correspondente
