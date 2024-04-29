@@ -6,7 +6,7 @@ import { IoMdExit } from "react-icons/io";
 
 const NavBarMed = () => {
   return (
-    <nav className="naveMed">
+    <nav className="navegMed">
       
       <div className="links">
         <button>

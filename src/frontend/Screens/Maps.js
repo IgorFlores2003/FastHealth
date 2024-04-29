@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Geolocation from "react-native-geolocation-service";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import NavBar from "../../components/Navbar";
 
 function Maps() {
   const { isLoaded } = useJsApiLoader({
@@ -14,6 +15,7 @@ function Maps() {
 
   return (
     <div className="map">
+      <NavBar/>
       {isLoaded ? (
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "100%" }}

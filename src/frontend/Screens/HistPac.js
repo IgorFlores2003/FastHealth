@@ -1,44 +1,97 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import NavBar from "../../components/Navbar";
 
 const HistPac = () => {
-  const navigate = useNavigate(); // Usando useNavigate para obter a função de navegação
+  const navigate = useNavigate();
+  const [consultas, setConsultas] = useState([]);
+  const URL = "http://localhost:8080/t";
+  const idUser = localStorage.getItem('loggedInUser');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Defina o número máximo de itens por tela aqui
+  const [showButton, setShowButton] = useState(false);
 
-  const redirectToNewPage = () => {
-    // Função para redirecionar para uma nova rota ao clicar na linha
-    navigate('/triagem');
+  const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
+
+  const myRef = useRef(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${URL}/?userId=${idUser}`);
+        const resposta = response.data;
+       
+        setConsultas(resposta);
+        console.log(consultas)
+        if (consultas.length > 0) {
+          localStorage.setItem('consultaId', consultas[0]._id);
+        }
+        
+      } catch (error) {
+        console.error("Erro ao obter os dados:", error);
+      }
+    };
+
+    if (idUser) {
+      fetchData();
+    }
+  }, [idUser]);
+
+  useEffect(() => {
+    const totalItems = consultas.filter(consulta => consulta.userId === idUser).length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    if (currentPage < totalPages) {
+      setShowButton(true);
+    } else {
+      setShowButton(false);
+    }
+  }, [consultas, currentPage, idUser, itemsPerPage]);
+
+  const redirectToNewPage = (consultaId) => {
+    navigate(`/informacoes/${consultaId}`); // Rota corrigida para `/informacoes/:consultaId`
+  };
+  const handleButtonClick = () => {
+    setCurrentPage(prevPage => prevPage + 1);
+    scrollToRef(myRef);
   };
 
-  const dados = [
-    { id: 1, dor: "9-10", local: "Braço", data: "02/05/2024" },
-    { id: 2, dor: "4-5", local: "Perna", data: "20/05/2024" },
-    { id: 3, dor: "3-4", local: "Cabeça", data: "30/05/2024" },
-  ];
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = consultas.filter(consulta => consulta.userId === idUser).slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-<div>
-  <h1>Histórico De Consultas</h1>
-    <table className="tabelaPac">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Intensidade da Dor</th>
-          <th>Local da Dor</th>
-          <th>Data da Última Triagem</th>
-        </tr>
-      </thead>
-      <tbody>
-        {dados.map((item) => (
-          <tr className="trPac" key={item.id} onClick={redirectToNewPage}>
-            <td>{item.id}</td>
-            <td>{item.dor}</td>
-            <td>{item.local}</td>
-            <td>{item.data}</td>
+    <div>
+      <NavBar />
+      <h1>Histórico de Consultas</h1>
+      <table className="tabelaPac">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Intensidade da Dor</th>
+            <th>Local da Dor</th>
+            <th>Data da Última Triagem</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {currentItems.map((consulta) => (
+            <tr
+              className="trPac"
+              key={consulta._id}
+              onClick={() => redirectToNewPage(consulta._id)}
+            >
+              <td>{consulta._id}</td>
+              <td>{consulta.intensidade}</td>
+              <td>{consulta.dor}</td>
+              <td>{consulta.dataAtual}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {showButton && (
+        <button className="buttonHis" onClick={handleButtonClick}>Ir para mais resultados</button>
+      )}
+      <div ref={myRef}></div>
     </div>
   );
 };

@@ -18,6 +18,7 @@ const User = mongoose.model("User", {
   crm: Number,
   cpf: Number,
   tipoUsuario: String,
+  usuarioLogado:String
 });
 
 app.get("/", async (req, res) => {
@@ -58,6 +59,8 @@ const Triagem = mongoose.model("Tria", {
   Temperatura: Number,
   Hospital: String,
   descricao: String,
+  dataAtual:String,
+  userId:String
 });
 
 app.post("/tri", async (req, res) => {
@@ -71,6 +74,8 @@ app.post("/tri", async (req, res) => {
     Temperatura: req.body.Temperatura,
     Hospital: req.body.Hospital,
     descricao: req.body.descricao,
+    dataAtual: req.body.dataAtual,
+    userId: req.body.userId
   });
 
   await Tria.save();
@@ -80,6 +85,18 @@ app.post("/tri", async (req, res) => {
 app.get("/t", async (req, res) => {
   const triagem = await Triagem.find();
   res.send(triagem);
+});
+
+app.get("/t:consultaId", async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const userConsultas = await Triagem.find({ userId: userId });
+    res.json(userConsultas);
+  } catch (error) {
+    console.error("Erro ao obter os dados:", error);
+    res.status(500).json({ message: "Erro ao obter o histórico de consultas" });
+  }
 });
 
 app.listen(port, () => {
