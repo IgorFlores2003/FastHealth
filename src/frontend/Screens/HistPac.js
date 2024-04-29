@@ -19,6 +19,8 @@ const HistPac = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        // axios.get(url).then( (response)=>setConsultas(response)
         const response = await axios.get(`${URL}/?userId=${idUser}`);
         const resposta = response.data;
        
