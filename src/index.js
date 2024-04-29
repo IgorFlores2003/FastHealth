@@ -12,6 +12,8 @@ import User from "./frontend/Screens/User.js";
 import Hist from "./frontend/Screens/Hist.js";
 import Caixa from "./frontend/Screens/Caixa.js";
 import HistPac from "./frontend/Screens/HistPac.js";
+import Informaceos from "./frontend/Screens/TriInformation.js";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -34,6 +36,7 @@ const router = createBrowserRouter([
       { path: "/Hist", element: <Hist /> },
       { path: "/Caixa", element: <Caixa /> },
       { path: "/HistUser", element: <HistPac /> },
+      {path: "/informacoes/:consultaId", element: <Informaceos/>},
     
     ],
   },

@@ -1,53 +1,112 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBarMed from "../../components/NavBarMed/index";
+import axios from "axios";
+import NavBarMed from "../../components/NavBarMed";
 
 const Caixa = () => {
-    const dados = [
-    { id: 1, nome: "Igor", idade: 21, dor: "9-10", data: "02/10/2024", local:"perna"},
-      { id: 2, nome: "Clayton", idade: 49, dor: "4-5", data: "21/09/2024", local:"cabeça"},
-      { id: 3, nome: "Jasmim", idade: 20, dor: "3-4", data: "22/10/2024", local:"braço"},
-    ];
+  const navigate = useNavigate();
+  const [consultas, setConsultas] = useState([]);
+  const URL = "http://localhost:8080/busca";
+  const [currentPage, setCurrentPage] = useState(1);
+  const [user,setUser] = useState();
+  const itemsPerPage = 5; // Defina o número máximo de itens por tela aqui
+  const [showButton, setShowButton] = useState(false);
+  const [showBackButton, setShowBackButton] = useState(false);
+ 
+  const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
 
-const navigate = useNavigate(); // Usando useNavigate para obter a função de navegação
+  const myRef = useRef(null);
 
-const redirectToNewPage = () => {
-  // Função para redirecionar para uma nova rota ao clicar na linha
-  navigate('/triagem');
-};
+  
+  useEffect(() => {
+      const fetchConsultas = async () => {
+        try {
+          const response2 = await axios.get(`http://localhost:8080/t`);
+          const consultaI = response2.data;
+          console.log(consultaI)
+          setConsultas(consultaI);
+          console.log(consultas);
+        } catch (error) {
+          console.error("Erro ao obter as consultas:", error);
+        }
+      };
+  
+      fetchConsultas();
+  }, []);
+  
 
-    return (
-      <div> 
-        <NavBarMed/>
-        <h1>Caixa de Entrada</h1>
-      <table className="tabelaCaixa">
+  useEffect(() => {
+    const totalItems = consultas.filter(
+      (consulta) => consulta.Hospital === user
+    ).length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    setShowButton(currentPage < totalPages);
+    setShowBackButton(currentPage > 1);
+  }, [consultas, currentPage, user, itemsPerPage]);
+
+  const redirectToNewPage = (consultaId) => {
+    navigate(`/informacoes/${consultaId}`);
+  };
+
+  const handleButtonClick = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+    scrollToRef(myRef);
+  };
+
+  const handleBackButtonClick = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+    scrollToRef(myRef);
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = consultas
+    .slice(indexOfFirstItem, indexOfLastItem);
+
+  return (
+    <div>
+      <NavBarMed />
+      <h1>Caixa de Entrasa</h1>
+      <table className="tabelaPac">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nome</th>
-            <th>Idade</th>
+            <th>Intensidade da Dor</th>
             <th>Local da Dor</th>
-            <th>Nivel de Dor</th>
-            <th>Data da Triagem</th>
+            <th>Data da Última Triagem</th>
           </tr>
         </thead>
         <tbody>
-          {dados.map((item) => (
-            <tr className="trCaixa" onClick={redirectToNewPage} key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.nome}</td>
-              <td>{item.idade}</td>
-              <td>{item.local}</td>
-              <td>{item.dor}</td>
-              <td>{item.data}</td>
+          {currentItems.map((consulta) => (
+            <tr
+              className="trPac"
+              key={consulta._id}
+              onClick={() => redirectToNewPage(consulta._id)}
+            >
+              <td>{consulta._id}</td>
+              <td>{consulta.intensidade}</td>
+              <td>{consulta.dor}</td>
+              <td>{consulta.dataAtual}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      </div>
-    );
-  }
-  
+      {showButton && (
+        <button className="buttonHis" onClick={handleButtonClick}>
+          Próximo
+        </button>
+      )}
+      <button
+        className="buttonHis"
+        onClick={handleBackButtonClick}
+        disabled={!showBackButton}
+      >
+        Anterior
+      </button>
+
+      <div ref={myRef}></div>
+    </div>
+  );
+};
 
 export default Caixa;

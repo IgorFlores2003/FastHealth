@@ -54,6 +54,8 @@ function Login() {
               });
               navigate(user.tipoUsuario === 'medico' ? "/Meduser" : "/Pacuser");
               const usuarioLogado = user.email
+              localStorage.setItem('loggedInUser', usuarioLogado);
+
               console.log(usuarioLogado)
               break; // Para o loop ao encontrar um usuário autenticado
             } else {

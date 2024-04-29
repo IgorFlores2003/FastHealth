@@ -1,57 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import NavBar from "../../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import { format } from 'date-fns';
+
 
 function Triagem() {
+  const navigate = useNavigate();
+
   const [triagem, setTriagem] = useState({
     dor:'',
     tempo:'',
-    tempo2:'',
+    tempo2:'Horas',
     intensidade:'',
     pressao:'',
     pressao2:'',
     Temperatura:'',
     Hospital:'',
-    descricao:''
+    descricao:'',
+    dataAtual: format(new Date(), 'dd/MM/yyyy')
   });
-  const user = async () =>{ 
-    try{
-      const response = await axios.get(`${URL}/?email=igorfb2003@gmail.com`)
-      const users = response.data;
-       console.log(users)
-  }catch{ }
-} 
+
+  const [hospitais, setHospitais] = useState([]); // Para armazenar a lista de hospitais disponíveis
 
   const handleInputChange = (e) => {
-    
-      const { name, value } = e.target;
-      setTriagem({ ...triagem, [name]: value });
+    const { name, value } = e.target;
+    setTriagem({ ...triagem, [name]: value });
 
-      console.log(triagem)
+    console.log(triagem)
+  };
+
+  useEffect(() => {
+    // Função para buscar a lista de hospitais
+    const fetchHospitais = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080");
+        const hospitaisData = response.data; // Recebe os dados diretamente da resposta
+
+        console.log(hospitaisData)
+  
+        setHospitais(hospitaisData); // Define os hospitais no estado
+
+        console.log(hospitais)
+      } catch (error) {
+        console.error("Erro ao obter a lista de hospitais:", error);
+      }
     };
+  
+    fetchHospitais(); // Chama a função de busca quando o componente é montado
+  }, []);
+
+  const idUser = localStorage.getItem('loggedInUser'); // Obtendo o ID do usuário logado do Local Storage
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      await axios.post("http://localhost:8080/tri", triagem);
-      
+      const triagemData = {
+        ...triagem,
+        userId: idUser // Incluindo o ID do usuário no objeto de triagem
+      };
+  
+      // Enviando a triagem para a API
+      await axios.post("http://localhost:8080/tri", triagemData);
+  
+      // Exibindo mensagem de sucesso
       Swal.fire({
         icon: "success",
         title: "Triagem Efetuada com Sucesso"
       });
-      console.log(user.users)
+  
+      // Navegando para a página de usuário
+      navigate("/PacUser");
     } catch (err) {
       console.error(err);
+      // Exibindo mensagem de erro
       Swal.fire({
         icon: "error",
         title: "Erro ao salvar a Triagem"
       });
     }
   };
+  
 
   return (
     <div className="tria">
+      <NavBar/>
       <h1 className="title">Coleta de Dados do Paciente</h1>
       <form onSubmit={handleSubmit}>
         <div className="op1">
@@ -63,6 +98,7 @@ function Triagem() {
               name="dor"
               value="cabeça"
               onChange={handleInputChange}
+              required
             />
             Cabeça
           </label>
@@ -72,6 +108,7 @@ function Triagem() {
               name="dor"
               value="olhos"
               onChange={handleInputChange}
+              required
             />
             Olhos
           </label>
@@ -82,6 +119,7 @@ function Triagem() {
               name="dor"
               value="braços"
               onChange={handleInputChange}
+              required
             />
             Braços
           </label>
@@ -91,6 +129,7 @@ function Triagem() {
               name="dor"
               value="pernas"
               onChange={handleInputChange}
+              required
             />
             Pernas
           </label>
@@ -115,7 +154,7 @@ function Triagem() {
               type="number"
               maxLength="2"
               size="1"
-              onChange={handleInputChange}></input>
+              onChange={handleInputChange} required></input>
             <select id="tempo2" name="tempo2" onChange={handleInputChange}>
             <option value="Horas" >Horas</option>
               <option value="Dias" >Dias</option>
@@ -130,28 +169,28 @@ function Triagem() {
           <label>
             Qual a intensidade da dor?
             <br></br>
-            <input type="radio" name="intensidade" value="Sem Dor" onChange={handleInputChange}/>
+            <input type="radio" name="intensidade" value="Sem Dor" onChange={handleInputChange} required/>
             😊Sem dor
           </label>
           <label>
-            <input type="radio" name="intensidade" value="Dor Leve" onChange={handleInputChange}/>
+            <input type="radio" name="intensidade" value="Dor Leve" onChange={handleInputChange} required/>
             🙂 Dor leve
           </label>
           <label>
-            <input type="radio" name="intensidade" value="Dor moderada" onChange={handleInputChange}/>
+            <input type="radio" name="intensidade" value="Dor moderada" onChange={handleInputChange} required/>
             😐Dor moderada
           </label>
           <label>
             <br></br>
-            <input type="radio" name="intensidade" value="Dor intensa" onChange={handleInputChange}/>
+            <input type="radio" name="intensidade" value="Dor intensa" onChange={handleInputChange} required/>
             🙁Dor intensa
           </label>
           <label>
-            <input type="radio" name="intensidade" value="Dor muito intensa" onChange={handleInputChange}/>
+            <input type="radio" name="intensidade" value="Dor muito intensa" onChange={handleInputChange} required/>
             😟Dor muito intensa
           </label>
           <label>
-            <input type="radio" name="intensidade" value="Pior dor possível" onChange={handleInputChange}/>
+            <input type="radio" name="intensidade" value="Pior dor possível" onChange={handleInputChange} required/>
             😣Pior dor possível
           </label>
         </div>
@@ -176,11 +215,14 @@ function Triagem() {
           <br></br>
           <label>Qual hospital irá ser atendido?</label>
           <br></br>
-          <select className="selectOp" id="options" name="Hospital" onChange={handleInputChange} >
-            <option value="Hospital 1" onChange={handleInputChange}>Hospital 1</option>
-            <option value="Hospital 2" onChange={handleInputChange}>Hospital 2</option>
-            <option value="Hospital 3" onChange={handleInputChange}>Hospital 3</option>
-          </select>
+          <select className="selectOp" id="options" name="Hospital" onChange={handleInputChange}>
+  <option value="" required>Selecione o hospital</option>
+  {hospitais
+    .filter(hospital => hospital.hospital !== "") // Filtra os hospitais vazios
+    .map((hospital) => (
+      <option key={hospital._id} value={hospital.hospital}>{hospital.hospital}</option>
+    ))}
+</select>
         </div>
         <div>
           <br></br>

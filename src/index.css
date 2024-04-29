@@ -154,6 +154,12 @@ link{
   border-style: solid;
   margin-bottom: 20px;
 }
+.navegMed {
+  text-align: center;
+  background-color: rgb(142, 176, 176);
+  border-style: solid;
+  margin-bottom: 20px;
+}
 .MedTitle{
   text-align: center;
 }
@@ -299,6 +305,19 @@ link{
   cursor: pointer;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
 }
+.navegMed button{
+  background-color: #02c3ea; 
+  border-style: solid;
+  border-radius: 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
+}
 .naveg button{
   background-color: #02c3ea; 
   border-style: solid;
@@ -317,7 +336,21 @@ link{
   border-style: solid;
   border-radius: 5px;
   padding: 10px 20px;
-  text-align: center;
+  text-align: left;
+  display: inline-block;
+  font-size: 15px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
+}
+
+.navegMed button:hover{
+  background-color: #00a1a9; 
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px 20px;
+  text-align: left;
   display: inline-block;
   font-size: 15px;
   margin: 4px 2px;
@@ -337,4 +370,33 @@ size: 30px;
 h1{
  text-align: center;
  margin-bottom: 10px;
+}
+.buttonHis{
+  background-color: #02c3ea; 
+  border-style: solid;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-left: 80%;
+  margin-top: 20px;
+  text-decoration: none;
+  text-align: right;
+  display: inline-block;
+  font-size: 15px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
+}
+.buttonHis:hover{
+  background-color: #00a1a9; 
+  border-style: solid;
+  border-radius: 5px;
+  margin-left: 80%;
+  margin-top: 20px;
+  padding: 10px 20px;
+  text-align: right;
+  display: inline-block;
+  font-size: 15px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
 }
