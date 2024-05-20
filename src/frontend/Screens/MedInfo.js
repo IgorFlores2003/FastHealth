@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import BackButton from "../../components/BackButton";
+import BackButtonMed from "../../components/BackButtonMed";
 
-function Informacoes() {
+function InformacoesTriagem() {
   const { consultaId } = useParams(); // Obtém o ID da consulta da URL
   const [consulta, setConsulta] = useState(null);
 
@@ -27,20 +27,16 @@ function Informacoes() {
 
   return (
     <div className="tria">
-      <BackButton/>
+      <BackButtonMed/>
     <div className="centered-content">
-    <h1 className="title">Informações da Coleta de Dados do Paciente:</h1>
+    <h1 className="title">Informações da Coleta:</h1>
     <div>
       <h3>ID da Consulta:</h3>
       <p>{consulta._id}</p>
       </div>
       <div>
       <h3>Local da Dor:</h3>
-{consulta.dor === "outros" ? (
-  <p>{consulta.outro}</p>
-) : (
-  <p>{consulta.dor}</p>
-)}
+      <p>{consulta.dor }</p>
       </div>
       <div>
       <h3>Intensidade da Dor:</h3>
@@ -61,7 +57,7 @@ function Informacoes() {
       </div>
       <div>
       <h3>Temperatura: </h3>
-      <p>{consulta.Temperatura ? consulta.Temperatura + " º Graus" : "Não Informado"}</p>
+      <p>{consulta.Temperatura || "Não Informado"}</p>
       </div>
       <div>
       <h3> Hospital Atendido: </h3>
@@ -77,4 +73,4 @@ function Informacoes() {
   );
 }
 
-export default Informacoes;
+export default InformacoesTriagem;

@@ -1,11 +1,13 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../index.css";
+import "../BackButtonMed/index.css";
 import { FaHouseUser } from "react-icons/fa";
 import { IoMdExit } from "react-icons/io";
+import { IoReturnUpBack } from "react-icons/io5";
+
 import Swal from 'sweetalert2';
 
-const NavBar = () => {
+const BackButtonMed = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -22,15 +24,21 @@ const NavBar = () => {
     });
   };
 
-  const Home = () =>{
-    navigate("/PacUser")
+  const Back = () =>{
+    navigate(-1);
   }
+const Home = () =>{
+  navigate("/MedUser")
+}
 
   return (
     <nav className="naveg">
       <div >
         <button onClick={Home}>
             <FaHouseUser />HOME
+        </button>
+        <button onClick={Back}>
+            <IoReturnUpBack />VOLTAR
         </button>
         <button onClick={handleLogout}>
           < IoMdExit className="exit" />SAIR
@@ -40,4 +48,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default BackButtonMed;

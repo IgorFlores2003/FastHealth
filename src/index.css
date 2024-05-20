@@ -7,6 +7,9 @@
   font-weight: 400;
   font-style: normal;
 }
+input{
+  font-family: sans-serif;
+}
 
 body{
   background-color: aquamarine;
@@ -154,12 +157,6 @@ link{
   border-style: solid;
   margin-bottom: 20px;
 }
-.navegMed {
-  text-align: center;
-  background-color: rgb(142, 176, 176);
-  border-style: solid;
-  margin-bottom: 20px;
-}
 .MedTitle{
   text-align: center;
 }
@@ -191,6 +188,7 @@ link{
 }
 .op2{
   display: inline-block;
+  margin-left: 2px;
 }
 .useroptions button{
  background-color: #006e2e; 
@@ -305,19 +303,6 @@ link{
   cursor: pointer;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
 }
-.navegMed button{
-  background-color: #02c3ea; 
-  border-style: solid;
-  border-radius: 5px;
-  padding: 5px 10px;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
 .naveg button{
   background-color: #02c3ea; 
   border-style: solid;
@@ -345,19 +330,6 @@ link{
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
 }
 
-.navegMed button:hover{
-  background-color: #00a1a9; 
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px 20px;
-  text-align: left;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
 .crm{
   margin-left: 32px;
 }
@@ -399,4 +371,66 @@ h1{
   transition-duration: 0.4s;
   cursor: pointer;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
+}
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  background-color: aqua; 
+  margin: 5px 4px 7px 7px
+}
+.centered-content div {
+  display: flex;
+  align-items: center;
+}
+.centered-content div p{
+  color:#1121af
+}
+.centered-content div h3 {
+  margin-right: 10px; /* Adiciona um espaço entre o título e o texto */
+}
+.loading {
+  text-align: center;
+  margin-top: 50px;
+}
+.exit{
+  color: #ad0000;
+}
+
+#filtroContainer {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: #f0f0f0;
+  border: 3px solid #000000;
+  height: 26px;
+  padding: 8px; 
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#filtroEmail {
+  width: 150px; 
+  height: 30px; 
+  padding: 4px; 
+  font-size: 14px; 
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid #000000;
+}
+
+#filtroButton {
+  padding: 6px 10px; 
+  font-size: 14px; 
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#filtroButton:hover {
+  background-color: #0056b3;
 }

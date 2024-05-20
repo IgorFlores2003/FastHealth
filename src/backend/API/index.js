@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -15,8 +16,8 @@ const User = mongoose.model("User", {
   password: String,
   hospital: String,
   endereco: String,
-  crm: Number,
-  cpf: Number,
+  crm: String,
+  cpf: String,
   tipoUsuario: String,
   usuarioLogado:String
 });
@@ -32,25 +33,33 @@ app.delete("/:id", async (req, res) => {
 });
 
 app.post("/", async (req, res) => {
-  const user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    hospital: req.body.hospital,
-    endereco: req.body.endereco,
-    crm: req.body.crm,
-    cpf: req.body.cpf,
-    tipoUsuario: req.body.tipoUsuario
-  });
+  try {
 
-  await user.save();
-  return res.send(user);
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      hospital: req.body.hospital,
+      endereco: req.body.endereco,
+      crm: req.body.crm,
+      cpf: req.body.cpf,
+      tipoUsuario: req.body.tipoUsuario
+    });
+
+    await user.save();
+    return res.status(201).json(user);
+  } catch (error) {
+    console.error('Erro ao salvar usuário:', error);
+    return res.status(500).json({ message: 'Erro ao cadastrar usuário. Por favor, tente novamente.' });
+  }
 });
+
 
 //Informações da Triagem
 
 const Triagem = mongoose.model("Tria", {
   dor: String,
+  outro:String,
   tempo: Number,
   tempo2:String,
   intensidade: String,
@@ -60,12 +69,14 @@ const Triagem = mongoose.model("Tria", {
   Hospital: String,
   descricao: String,
   dataAtual:String,
-  userId:String
+  userId:String,
+  name:String
 });
 
 app.post("/tri", async (req, res) => {
   const Tria = new Triagem({
     dor: req.body.dor,
+    outro: req.body.outro,
     tempo: req.body.tempo,
     tempo2: req.body.tempo2,
     intensidade: req.body.intensidade,
@@ -75,29 +86,63 @@ app.post("/tri", async (req, res) => {
     Hospital: req.body.Hospital,
     descricao: req.body.descricao,
     dataAtual: req.body.dataAtual,
-    userId: req.body.userId
+    userId: req.body.userId,
+    name: req.body.name
   });
 
   await Tria.save();
   return res.send(Tria);
 });
 
-app.get("/t", async (req, res) => {
-  const triagem = await Triagem.find();
-  res.send(triagem);
-});
-
-app.get("/t:consultaId", async (req, res) => {
-  const userId = req.params.userId;
+app.get("/tr", async (req, res) => {
+  const userHospital = req.query.hospital; // Obter o nome do hospital da query string
 
   try {
-    const userConsultas = await Triagem.find({ userId: userId });
-    res.json(userConsultas);
+    const triagem = await Triagem.find({ Hospital: userHospital }); // Filtrar as triagens com base no hospital
+    res.send(triagem);
   } catch (error) {
     console.error("Erro ao obter os dados:", error);
-    res.status(500).json({ message: "Erro ao obter o histórico de consultas" });
+    res.status(500).json({ message: "Erro ao obter as triagens do hospital." });
   }
 });
+
+app.get("/t", async (req, res) => {
+  const userId = req.query.userId; // Obter o ID do usuário da query string
+
+  try {
+    const triagem = await Triagem.find({ userId: userId }); // Filtrar as triagens com base no ID do usuário
+    res.send(triagem);
+  } catch (error) {
+    console.error("Erro ao obter os dados:", error);
+    res.status(500).json({ message: "Erro ao obter as triagens do usuário." });
+  }
+});
+app.get("/emails", async (req, res) => {
+  try {
+    const users = await User.find({ tipoUsuario: "paciente" }, { email: 1 }); // Retorna apenas os e-mails dos usuários do tipo "paciente"
+    const emails = users.map(user => user.email); // Mapeia os usuários para obter apenas os e-mails
+    res.json(emails);
+  } catch (error) {
+    console.error("Erro ao obter os e-mails dos pacientes:", error);
+    res.status(500).json({ message: "Erro ao obter os e-mails dos pacientes." });
+  }
+});
+
+app.get("/test/:consultaId", async (req, res) => {
+  const consultaId = req.params.consultaId;
+
+  try {
+    const consulta = await Triagem.findById(consultaId);
+    if (!consulta) {
+      return res.status(404).json({ message: "Triagem não encontrada" });
+    }
+    res.json(consulta);
+  } catch (error) {
+    console.error("Erro ao obter os dados:", error);
+    res.status(500).json({ message: "Erro ao obter os dados da triagem" });
+  }
+});
+
 
 app.listen(port, () => {
   mongoose.connect(

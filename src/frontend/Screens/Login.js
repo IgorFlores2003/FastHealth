@@ -54,9 +54,17 @@ function Login() {
               });
               navigate(user.tipoUsuario === 'medico' ? "/Meduser" : "/Pacuser");
               const usuarioLogado = user.email
+              const hospitalDoUsuarioLogado = user.hospital
+              const name = user.name
+             
               localStorage.setItem('loggedInUser', usuarioLogado);
+              localStorage.setItem('hospital', hospitalDoUsuarioLogado);
+              localStorage.setItem('nome', name);
+              
 
               console.log(usuarioLogado)
+              console.log(hospitalDoUsuarioLogado)
+              console.log(name)
               break; // Para o loop ao encontrar um usuário autenticado
             } else {
               // Senha incorreta para o email correspondente

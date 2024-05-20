@@ -11,6 +11,7 @@ function Triagem() {
 
   const [triagem, setTriagem] = useState({
     dor:'',
+    outro:'',
     tempo:'',
     tempo2:'Horas',
     intensidade:'',
@@ -23,6 +24,8 @@ function Triagem() {
   });
 
   const [hospitais, setHospitais] = useState([]); // Para armazenar a lista de hospitais disponíveis
+
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,6 +55,7 @@ function Triagem() {
   }, []);
 
   const idUser = localStorage.getItem('loggedInUser'); // Obtendo o ID do usuário logado do Local Storage
+  const name = localStorage.getItem('nome')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +63,8 @@ function Triagem() {
     try {
       const triagemData = {
         ...triagem,
-        userId: idUser // Incluindo o ID do usuário no objeto de triagem
+        userId: idUser, // Incluindo o ID do usuário no objeto de triagem
+        name: name
       };
   
       // Enviando a triagem para a API
@@ -89,60 +94,70 @@ function Triagem() {
       <NavBar/>
       <h1 className="title">Coleta de Dados do Paciente</h1>
       <form onSubmit={handleSubmit}>
-        <div className="op1">
-          <label>
-            Onde está doendo?
-            <br />
-            <input
-              type="radio"
-              name="dor"
-              value="cabeça"
-              onChange={handleInputChange}
-              required
-            />
-            Cabeça
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="dor"
-              value="olhos"
-              onChange={handleInputChange}
-              required
-            />
-            Olhos
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="dor"
-              value="braços"
-              onChange={handleInputChange}
-              required
-            />
-            Braços
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="dor"
-              value="pernas"
-              onChange={handleInputChange}
-              required
-            />
-            Pernas
-          </label>
-
-          <label>
-            Outro:
-            <input
-              name="dor"
-              type="text"
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
+      <div className="op1">
+  <label>
+    Onde está doendo?
+  </label>
+  <br />
+  <label>
+    <input
+      type="radio"
+      name="dor"
+      value="cabeça"
+      onChange={handleInputChange}
+      required
+    />
+    Cabeça
+  </label>
+  <label>
+    <input
+      type="radio"
+      name="dor"
+      value="olhos"
+      onChange={handleInputChange}
+      required
+    />
+    Olhos
+  </label>
+  <label>
+    <input
+      type="radio"
+      name="dor"
+      value="braços"
+      onChange={handleInputChange}
+      required
+    />
+    Braços
+  </label>
+  <label>
+    <input
+      type="radio"
+      name="dor"
+      value="pernas"
+      onChange={handleInputChange}
+      required
+    />
+    Pernas
+  </label>
+  <label>
+    <input
+      type="radio"
+      name="dor"
+      value="outros"
+      onChange={handleInputChange}
+      required
+    />
+    Outros
+  </label>
+  {triagem.dor === "outros" && (
+    <input
+      name="outro"
+      type="text"
+      onChange={handleInputChange}
+      required
+    />
+  )}
+</div>
         <div>
           <br></br>
           <label className="op2">
@@ -212,18 +227,21 @@ function Triagem() {
           </label>
         </div>
         <div>
-          <br></br>
-          <label>Qual hospital irá ser atendido?</label>
-          <br></br>
-          <select className="selectOp" id="options" name="Hospital" onChange={handleInputChange}>
-  <option value="" required>Selecione o hospital</option>
+  <br></br>
+  <label>Qual hospital irá ser atendido?</label>
+  <br></br>
+  <select className="selectOp" id="options" name="Hospital" onChange={handleInputChange} required>
+  <option value="">Selecione um hospital</option>
   {hospitais
-    .filter(hospital => hospital.hospital !== "") // Filtra os hospitais vazios
-    .map((hospital) => (
-      <option key={hospital._id} value={hospital.hospital}>{hospital.hospital}</option>
+    .filter(hospital => hospital.hospital.trim() !== "") // Filtra hospitais vazios
+    .reduce((uniqueHospitals, hospital) => { // Remove hospitais duplicados
+      return uniqueHospitals.includes(hospital.hospital) ? uniqueHospitals : [...uniqueHospitals, hospital.hospital];
+    }, [])
+    .map((hospital, index) => (
+      <option key={index} value={hospital}>{hospital}</option>
     ))}
 </select>
-        </div>
+</div>
         <div>
           <br></br>
           <label>Descrição (Opcional):</label>

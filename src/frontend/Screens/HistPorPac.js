@@ -1,36 +1,68 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavBar from "../../components/Navbar";
+import NavBarMed from "../../components/NavBarMed";
 
-const HistPac = () => {
+const Hist = () => {
   const navigate = useNavigate();
   const [consultas, setConsultas] = useState([]);
-  const loggedInUserId = localStorage.getItem('loggedInUser');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const [showNextButton, setShowNextButton] = useState(false);
   const [showPrevButton, setShowPrevButton] = useState(false);
+  const hospital = localStorage.getItem('hospital');
+  const URL = "http://localhost:8080/tr";
 
   const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
+
   const myRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/t?userId=${loggedInUserId}`);
+        const userResponse = await axios.get(`http://localhost:8080/users/${localStorage.getItem('loggedInUser')}`);
+        const userHospital = userResponse.data.hospital;
         
-        const sortedConsultas = response.data.reverse(); 
-        setConsultas(sortedConsultas);
+        const response = await axios.get(`${URL}/?hospital=${userHospital}`);
+        const resposta = response.data;
+       
+        setConsultas(resposta);
+        if (resposta.length > 0) {
+          localStorage.setItem('consultaId', resposta[0]._id);
+        }
+        
+      } catch (error) {
+        console.error("Erro ao obter os dados:", error);
+      }
+    };
+    
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Obter o hospital associado ao usuário logado
+        const userResponse = await axios.get(`http://localhost:8080/users/${localStorage.getItem('loggedInUser')}`);
+        const userHospital = userResponse.data.hospital;
+        
+        // Obter as triagens associadas ao hospital do usuário logado
+        const response = await axios.get(`${URL}/?hospital=${userHospital}`);
+        const resposta = response.data;
+       
+        setConsultas(resposta);
+        if (resposta.length > 0) {
+          localStorage.setItem('consultaId', resposta[0]._id);
+        }
+        
       } catch (error) {
         console.error("Erro ao obter os dados:", error);
       }
     };
   
-    if (loggedInUserId) {
-      fetchData();
-    }
-  }, [loggedInUserId]);
+    fetchData();
+  }, []);
+  
 
   useEffect(() => {
     const totalItems = consultas.length;
@@ -40,9 +72,8 @@ const HistPac = () => {
   }, [consultas, currentPage, itemsPerPage]);
 
   const redirectToNewPage = (consultaId) => {
-    navigate(`/informacoes/${consultaId}`);
+    navigate(`/Med/${consultaId}`); 
   };
-
   const handleNextButtonClick = () => {
     setCurrentPage(prevPage => prevPage + 1);
     scrollToRef(myRef);
@@ -52,23 +83,23 @@ const HistPac = () => {
     setCurrentPage(prevPage => prevPage - 1);
     scrollToRef(myRef);
   };
-
+  
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = consultas.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div>
-      <NavBar />
-      <h1>Histórico de Consultas</h1>
+      <NavBarMed/>
+      <h1>Histórico Por Paciente</h1>
       <table className="tabelaPac">
         <thead>
           <tr>
             <th>ID</th>
             <th>Intensidade da Dor</th>
             <th>Local da Dor</th>
+            <th>Quanto Tempo está Doendo</th>
             <th>Data da Coleta de Dados</th>
-            <th>Hospital Atendido</th>
           </tr>
         </thead>
         <tbody>
@@ -78,11 +109,11 @@ const HistPac = () => {
               key={consulta._id}
               onClick={() => redirectToNewPage(consulta._id)}
             >
-              <td>{consulta._id}</td>
+              <td>{consulta.userId}</td>
               <td>{consulta.intensidade}</td>
               <td>{consulta.dor}</td>
+              <td>{consulta.tempo + " " + consulta.tempo2}</td>
               <td>{consulta.dataAtual}</td>
-              <td>{consulta.Hospital}</td>
             </tr>
           ))}
         </tbody>
@@ -95,9 +126,8 @@ const HistPac = () => {
           <button className="buttonHis" onClick={handleNextButtonClick}>Ir para mais resultados</button>
         )}
       </div>
-      <div ref={myRef}></div>
     </div>
   );
 };
 
-export default HistPac;
+export default Hist;

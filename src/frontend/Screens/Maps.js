@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Geolocation from "react-native-geolocation-service";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import NavBar from "../../components/Navbar";
@@ -8,49 +8,73 @@ function Maps() {
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyA83zbSFogndgXQSf9w2SlsT9moRgGnC7E",
   });
-  const position = {
-    lat: -22.219769971209377,
-    lng: -45.91594182571526,
-  };
+
+  const [currentLocation, setCurrentLocation] = useState(null);
+
+  useEffect(() => {
+    // Obter a localização atual do usuário
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCurrentLocation({ lat: latitude, lng: longitude });
+      },
+      (error) => {
+        console.error(error);
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  }, []);
 
   return (
     <div className="map">
-      <NavBar/>
+      <NavBar />
       {isLoaded ? (
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "100%" }}
-          center={{ lat: -22.219769971209377, lng: -45.91594182571526 }}
-          zoom={17}
+          center={currentLocation}
+          zoom={14.5}
           options={{
             styles: [
               {
                 elementType: "labels",
-                featureType: "poi.attraction",
+                featureType: "poi",
+                stylers: [{ visibility: "off" }],
+              },
+              {
                 featureType: "poi.business",
+                stylers: [{ visibility: "off" }],
+              },
+              {
+                featureType: "poi.attraction",
+                stylers: [{ visibility: "off" }],
+              },
+              {
                 featureType: "poi.government",
-                featureType: "poi.park",
+                stylers: [{ visibility: "off" }],
+              },
+              {
                 featureType: "poi.place_of_worship",
-                featureType: "poi.scholl",
+                stylers: [{ visibility: "off" }],
+              },
+              {
+                featureType: "poi.school",
+                stylers: [{ visibility: "off" }],
+              },
+              {
                 featureType: "poi.sports_complex",
                 stylers: [{ visibility: "off" }],
+              },
+              {
+                featureType: "poi.medical",
+                stylers: [{ visibility: "on" }],
               },
             ],
           }}
         >
-          <Marker
-            position={position}
-            options={{
-              label: {
-                text: "Você está aqui",
-                className: "map-marker",
-              },
-            }}
-          />
-
-          <></>
+          
         </GoogleMap>
       ) : (
-        <></>
+        <div>Carregando mapa...</div>
       )}
     </div>
   );

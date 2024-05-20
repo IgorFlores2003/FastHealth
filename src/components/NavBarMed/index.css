@@ -1,17 +1,20 @@
-.naveMed{
-  text-align: left;
+.naveg {
+  text-align: center;
   background-color: rgb(142, 176, 176);
   border-style: solid;
   margin-bottom: 20px;
-  background-color: #00a1a9; 
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px 20px;
+
+}
+.naveg button{
+  color: black;
+}
+.naveg button:hover{
+  color: black;
+}
+.loading {
   text-align: center;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
+  margin-top: 50px;
+}
+.exit{
+  color: #ad0000;
 }

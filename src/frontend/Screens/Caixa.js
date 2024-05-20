@@ -6,74 +6,82 @@ import NavBarMed from "../../components/NavBarMed";
 const Caixa = () => {
   const navigate = useNavigate();
   const [consultas, setConsultas] = useState([]);
-  const URL = "http://localhost:8080/busca";
   const [currentPage, setCurrentPage] = useState(1);
-  const [user,setUser] = useState();
-  const itemsPerPage = 5; // Defina o número máximo de itens por tela aqui
-  const [showButton, setShowButton] = useState(false);
-  const [showBackButton, setShowBackButton] = useState(false);
- 
-  const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop);
+  const itemsPerPage = 5;
+  const [showNextButton, setShowNextButton] = useState(false);
+  const [showPrevButton, setShowPrevButton] = useState(false);
+  const hospital = localStorage.getItem('hospital');
+  const URL = "http://localhost:8080/tr";
+
+  const scrollToRef = (ref) => {
+    if (ref.current !== null) {
+      window.scrollTo(0, ref.current.offsetTop);
+    }
+  };
 
   const myRef = useRef(null);
 
-  
   useEffect(() => {
-      const fetchConsultas = async () => {
-        try {
-          const response2 = await axios.get(`http://localhost:8080/t`);
-          const consultaI = response2.data;
-          console.log(consultaI)
-          setConsultas(consultaI);
-          console.log(consultas);
-        } catch (error) {
-          console.error("Erro ao obter as consultas:", error);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${URL}/?hospital=${hospital}`);
+
+        const sortedConsultas = response.data.reverse(); 
+        
+        setConsultas(sortedConsultas);
+
+        if (sortedConsultas.length > 0) {
+          localStorage.setItem('consultaId', sortedConsultas[0]._id);
         }
-      };
+        
+      } catch (error) {
+        console.error("Erro ao obter os dados:", error);
+      }
+    };
   
-      fetchConsultas();
-  }, []);
-  
+    if (hospital) {
+      fetchData();
+    }
+  }, [hospital]);
+
+ 
 
   useEffect(() => {
-    const totalItems = consultas.filter(
-      (consulta) => consulta.Hospital === user
-    ).length;
+    const totalItems = consultas.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
-    setShowButton(currentPage < totalPages);
-    setShowBackButton(currentPage > 1);
-  }, [consultas, currentPage, user, itemsPerPage]);
+    setShowNextButton(currentPage < totalPages);
+    setShowPrevButton(currentPage > 1);
+  }, [consultas, currentPage, itemsPerPage]);
 
   const redirectToNewPage = (consultaId) => {
-    navigate(`/informacoes/${consultaId}`);
+    navigate(`/Med/${consultaId}`); 
   };
-
-  const handleButtonClick = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+  const handleNextButtonClick = () => {
+    setCurrentPage(prevPage => prevPage + 1);
     scrollToRef(myRef);
   };
 
-  const handleBackButtonClick = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+  const handlePrevButtonClick = () => {
+    setCurrentPage(prevPage => prevPage - 1);
     scrollToRef(myRef);
   };
-
+  
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = consultas
-    .slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = consultas.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div>
-      <NavBarMed />
-      <h1>Caixa de Entrasa</h1>
+      <NavBarMed/>
+      <h1>Caixa de Entrada</h1>
       <table className="tabelaPac">
         <thead>
           <tr>
             <th>ID</th>
             <th>Intensidade da Dor</th>
             <th>Local da Dor</th>
-            <th>Data da Última Triagem</th>
+            <th>Quanto Tempo está Doendo</th>
+            <th>Data da Coleta de Dados</th>
           </tr>
         </thead>
         <tbody>
@@ -86,25 +94,20 @@ const Caixa = () => {
               <td>{consulta._id}</td>
               <td>{consulta.intensidade}</td>
               <td>{consulta.dor}</td>
+              <td>{consulta.tempo + " " + consulta.tempo2}</td>
               <td>{consulta.dataAtual}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      {showButton && (
-        <button className="buttonHis" onClick={handleButtonClick}>
-          Próximo
-        </button>
-      )}
-      <button
-        className="buttonHis"
-        onClick={handleBackButtonClick}
-        disabled={!showBackButton}
-      >
-        Anterior
-      </button>
-
-      <div ref={myRef}></div>
+      <div>
+        {showPrevButton && (
+          <button className="buttonHis" onClick={handlePrevButtonClick}>Voltar</button>
+        )}
+        {showNextButton && (
+          <button className="buttonHis" onClick={handleNextButtonClick}>Ir para mais resultados</button>
+        )}
+      </div>
     </div>
   );
 };
