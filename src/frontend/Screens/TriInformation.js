@@ -5,13 +5,13 @@ import { useParams } from "react-router-dom";
 import BackButton from "../../components/BackButton";
 
 function Informacoes() {
-  const { consultaId } = useParams(); // Obtém o ID da consulta da URL
+  const { consultaId } = useParams();
   const [consulta, setConsulta] = useState(null);
 
   useEffect(() => {
     const fetchConsulta = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/test/${consultaId}`); // Requisição para obter informações da consulta
+        const response = await axios.get(`http://localhost:8080/test/${consultaId}`); 
         setConsulta(response.data);
       } catch (error) {
         console.error("Erro ao obter informações da consulta:", error);
@@ -22,7 +22,7 @@ function Informacoes() {
   }, [consultaId]);
 
   if (!consulta) {
-    return <div className="loading">Carregando...</div>; // Exibe "Carregando..." enquanto as informações estão sendo buscadas
+    return <div className="loading">Carregando...</div>; 
   }
 
   return (
@@ -32,7 +32,7 @@ function Informacoes() {
     <h1 className="title">Informações da Coleta de Dados do Paciente:</h1>
     <div>
       <h3>ID da Consulta:</h3>
-      <p>{consulta._id}</p>
+      <p>{consulta.id}</p>
       </div>
       <div>
       <h3>Local da Dor:</h3>

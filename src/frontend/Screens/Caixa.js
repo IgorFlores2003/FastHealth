@@ -31,8 +31,10 @@ const Caixa = () => {
         setConsultas(sortedConsultas);
 
         if (sortedConsultas.length > 0) {
-          localStorage.setItem('consultaId', sortedConsultas[0]._id);
+          localStorage.setItem('consultaId', sortedConsultas[0].id);
         }
+
+        console.log("Fetched Consultas:", sortedConsultas); // Add this line
         
       } catch (error) {
         console.error("Erro ao obter os dados:", error);
@@ -44,8 +46,6 @@ const Caixa = () => {
     }
   }, [hospital]);
 
- 
-
   useEffect(() => {
     const totalItems = consultas.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -54,8 +54,10 @@ const Caixa = () => {
   }, [consultas, currentPage, itemsPerPage]);
 
   const redirectToNewPage = (consultaId) => {
+    console.log("Redirecting to consulta ID:", consultaId); // Add this line
     navigate(`/Med/${consultaId}`); 
   };
+
   const handleNextButtonClick = () => {
     setCurrentPage(prevPage => prevPage + 1);
     scrollToRef(myRef);
@@ -77,7 +79,7 @@ const Caixa = () => {
       <table className="tabelaPac">
         <thead>
           <tr>
-            <th>ID</th>
+           
             <th>Intensidade da Dor</th>
             <th>Local da Dor</th>
             <th>Quanto Tempo está Doendo</th>
@@ -88,10 +90,10 @@ const Caixa = () => {
           {currentItems.map((consulta) => (
             <tr
               className="trPac"
-              key={consulta._id}
-              onClick={() => redirectToNewPage(consulta._id)}
+              key={consulta.id}
+              onClick={() => redirectToNewPage(consulta.id)}
             >
-              <td>{consulta._id}</td>
+             
               <td>{consulta.intensidade}</td>
               <td>{consulta.dor}</td>
               <td>{consulta.tempo + " " + consulta.tempo2}</td>

@@ -32,7 +32,7 @@ function InformacoesTriagem() {
     <h1 className="title">Informações da Coleta:</h1>
     <div>
       <h3>ID da Consulta:</h3>
-      <p>{consulta._id}</p>
+      <p>{consulta.id}</p>
       </div>
       <div>
       <h3>Local da Dor:</h3>

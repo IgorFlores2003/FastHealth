@@ -55,7 +55,6 @@ const Hist = () => {
   };
 
   const handleFilterButtonClick = async () => {
-    // Nada a ser feito aqui, pois as consultas serão carregadas automaticamente
   };
   
   useEffect(() => {
@@ -67,7 +66,7 @@ const Hist = () => {
         setConsultas(sortedConsultas);
 
         if (sortedConsultas.length > 0) {
-          localStorage.setItem('consultaId', sortedConsultas[0]._id);
+          localStorage.setItem('consultaId', sortedConsultas[0].id);
         }
       } catch (error) {
         console.error("Erro ao obter os dados:", error);
@@ -118,8 +117,8 @@ const Hist = () => {
           {currentItems.map((consulta) => (
             <tr
               className="trPac"
-              key={consulta._id}
-              onClick={() => redirectToNewPage(consulta._id)}
+              key={consulta.id}
+              onClick={() => redirectToNewPage(consulta.id)}
             >
               <td>{consulta.userId}</td>
               <td>{consulta.intensidade}</td>

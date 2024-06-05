@@ -64,7 +64,7 @@ const HistPac = () => {
       <table className="tabelaPac">
         <thead>
           <tr>
-            <th>ID</th>
+           
             <th>Intensidade da Dor</th>
             <th>Local da Dor</th>
             <th>Data da Coleta de Dados</th>
@@ -75,10 +75,10 @@ const HistPac = () => {
           {currentItems.map((consulta) => (
             <tr
               className="trPac"
-              key={consulta._id}
-              onClick={() => redirectToNewPage(consulta._id)}
+              key={consulta.id}
+              onClick={() => redirectToNewPage(consulta.id)}
             >
-              <td>{consulta._id}</td>
+          
               <td>{consulta.intensidade}</td>
               <td>{consulta.dor}</td>
               <td>{consulta.dataAtual}</td>

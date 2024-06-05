@@ -95,7 +95,7 @@ const Hist = () => {
       <table className="tabelaPac">
         <thead>
           <tr>
-            <th>ID</th>
+          
             <th>Intensidade da Dor</th>
             <th>Local da Dor</th>
             <th>Quanto Tempo está Doendo</th>
@@ -106,10 +106,10 @@ const Hist = () => {
           {currentItems.map((consulta) => (
             <tr
               className="trPac"
-              key={consulta._id}
-              onClick={() => redirectToNewPage(consulta._id)}
+              key={consulta.id}
+              onClick={() => redirectToNewPage(consulta.id)}
             >
-              <td>{consulta.userId}</td>
+            
               <td>{consulta.intensidade}</td>
               <td>{consulta.dor}</td>
               <td>{consulta.tempo + " " + consulta.tempo2}</td>
