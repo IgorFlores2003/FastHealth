@@ -33,7 +33,6 @@ app.post("/tri", async (req, res) => {
   try {
     const data = { ...req.body };
 
-    // Convert empty strings to null for integer fields
     if (data.pressao === '') data.pressao = null;
     if (data.pressao2 === '') data.pressao2 = null;
     if (data.Temperatura === '') data.Temperatura = null;

@@ -12,7 +12,7 @@ input{
 }
 
 body{
-  background-color: aquamarine;
+  background-color: #c2faef;
 }
 .title{
 text-align: center;
@@ -25,16 +25,6 @@ text-align: center;
   margin-left: 40%;
   margin-right: 40%;
   border-style:double;
-}
-.tria{
-  border-radius: 5px;
-  background-color: aqua; 
-  border-radius: 10px;
-  border-style:double;
-  margin-left: 30%;
-  margin-right: 30%;
-  margin-top: 5px;
-
 }
 input{
   margin: 5px;
