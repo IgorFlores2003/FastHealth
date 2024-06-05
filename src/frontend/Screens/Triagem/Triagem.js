@@ -117,7 +117,7 @@ function Triagem() {
             <input name="outro" type="text" onChange={handleInputChange} required />
           )}
         </div>
-        <div>
+        <div> 
           <br></br>
           <label className="op2">
             Há quanto tempo está com dor/incômodo?

@@ -29,7 +29,7 @@ const Home = () =>{
     <nav className="naveg">
       <div >
         <button onClick={Home}>
-            <FaHouseUser />HOME
+            <FaHouseUser />Página Inicial
         </button>
         <button onClick={handleLogout}>
           < IoMdExit className="exit" />SAIR

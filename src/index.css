@@ -180,138 +180,13 @@ link{
   display: inline-block;
   margin-left: 2px;
 }
-.useroptions button{
- background-color: #006e2e; 
-  border-style: solid;
-  border-radius: 5px;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  display: inline-block;
-  font-size: 20px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
-.useroptions button:hover {
-  background-color: #003315; 
-  border-style: solid;
-  border-radius: 5px;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  display: inline-block;
-  font-size: 20px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
-.medoptions button{
-  background-color: #006e2e; 
-  border-style: solid;
-  border-radius: 5px;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
-.medoptions button:hover {
-  background-color: #003315; 
-  border-style: solid;
-  border-radius: 5px;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
-.container button{
-  background-color: #006e2e; 
-  border-style: solid;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
-.container button:hover{
-  background-color: #003315; 
-  border-style: solid;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
-.buttonReg{
-  background-color: #006e2e; 
-  border-style: solid;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-  
-}
-.buttonReg:hover{
-  background-color: #003315; 
-  border-style: solid;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
+
 .naveg button{
   background-color: #02c3ea; 
   border-style: solid;
   border-radius: 5px;
   padding: 5px 10px;
   text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
-.naveg button:hover{
-  background-color: #00a1a9; 
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px 20px;
-  text-align: left;
   display: inline-block;
   font-size: 15px;
   margin: 4px 2px;
@@ -361,24 +236,6 @@ h1{
   transition-duration: 0.4s;
   cursor: pointer;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19);
-}
-.centered-content {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: center;
-  background-color: aqua; 
-  margin: 5px 4px 7px 7px
-}
-.centered-content div {
-  display: flex;
-  align-items: center;
-}
-.centered-content div p{
-  color:#1121af
-}
-.centered-content div h3 {
-  margin-right: 10px; /* Adiciona um espaço entre o título e o texto */
 }
 .loading {
   text-align: center;

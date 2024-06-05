@@ -1,0 +1,30 @@
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 5px 4px 7px 7px;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    padding: 20px;
+    border: 30px;
+    border-radius: 20px;
+    box-shadow: 0 6px 8px rgba(4, 3, 4, 3); 
+    background-color: #149fac;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 5px;
+  }
+  .centered-content div {
+    display: flex;
+    align-items: center;
+  }
+  .centered-content div p{
+    color:#201b7c;
+    font-size:larger ;
+   
+  }
+  .centered-content div h3 {
+    margin-right: 10px; 
+    color: #000000;
+  }

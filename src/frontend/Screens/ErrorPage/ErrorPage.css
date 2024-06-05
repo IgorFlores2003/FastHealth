@@ -1,0 +1,33 @@
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .error-content {
+    text-align: center;
+  }
+  
+  .error-heading {
+    font-size: 100px;
+    margin-bottom: 20px;
+    color: #e63946; /* Vermelho */
+  }
+  
+  .error-text {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .error-link {
+    font-size: 18px;
+    color: #457b9d; /* Azul */
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .error-link:hover {
+    color: #1d3557; /* Azul mais escuro */
+  }
+  

@@ -12,3 +12,31 @@
     margin-right: 30%;
     margin-top: 5px;
   }
+  .tria label{
+    color: rgb(0, 0, 0);
+  }
+  .title{
+    color: black;
+  }
+  .tria button{
+        background-color: #0c731f;
+        color: #fff;
+        font-size: 20px;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px; 
+        transition: background-color 0.3s, transform 0.2s;
+        cursor: pointer;
+        outline: none; 
+        margin-top: 10px;
+    }
+    
+    .tria button:hover{
+        background-color: #19440b;
+        transform: scale(1.05);
+    }
+    
+    .tria button:focus{
+        box-shadow: 0 0 0 3px rgba(12, 115, 31, 0.3); /* Adicionei um efeito de foco */
+    }
+  
