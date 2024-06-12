@@ -99,5 +99,35 @@ body {
 }
 
 .bt:focus {
-    box-shadow: 0 0 0 3px rgba(12, 115, 31, 0.3); /* Adicionei um efeito de foco */
+    box-shadow: 0 0 0 3px rgba(12, 115, 31, 0.3); 
+}
+.password-input-container {
+    position: relative; 
+    display: flex;
+    align-items: center; 
+    gap:2px;
+}
+
+.toggle-password-btn {
+    border-radius: 1px; 
+    border-style: solid;
+    border-color: #023047;
+    color: #a03131; 
+    cursor: pointer;
+    outline: none;
+    padding: 13px; 
+    position: absolute;
+    right: 6px;
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+.password-input-container input {
+    flex: 1; 
+    padding: 15px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: all linear 160ms;
+    outline: none;
 }

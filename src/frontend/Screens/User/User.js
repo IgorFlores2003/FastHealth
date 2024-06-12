@@ -6,23 +6,23 @@ import "../User/User.css";
 const User = () => {
   return (
     <div>
-      <NavBar/>
+      <NavBar />
       <div className="useroptions">
-      <h1>Qual funcionalidade deseja utilizar?</h1>
-      <Link to="/Triagem">
-        <button>FAZER TRIAGEM</button>
-      </Link>
-      <br />
-      <Link to="/Hospitais">
-        <button>HOSPITAIS PRÓXIMOS</button>
-      </Link>
-      <br />
+        <h1>Qual funcionalidade deseja utilizar?</h1>
+        <Link to="/Triagem">
+          <button>FAZER TRIAGEM</button>
+        </Link>
+        <br />
+        <Link to="/Hospitais">
+          <button>HOSPITAIS PRÓXIMOS</button>
+        </Link>
+        <br />
 
-      <Link to="/HistUser">
-        <button>HISTÓRICO</button>
-      </Link>
-      <br />
-    </div>
+        <Link to="/HistUser">
+          <button>HISTÓRICO</button>
+        </Link>
+        <br />
+      </div>
     </div>
   );
 };
