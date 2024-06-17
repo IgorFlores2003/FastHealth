@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import "../Login/Login.css";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import "./Login.css";
 
 function Login() {
   const URL = "http://localhost:8080";
@@ -153,6 +154,7 @@ function Login() {
           </Link>
         </form>
       </div>
+      <footer className="poli"><Link to="/Politica" >Politica de Privacidade</Link></footer>
     </div>
   );
 }

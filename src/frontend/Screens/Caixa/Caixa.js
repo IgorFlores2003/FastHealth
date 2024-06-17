@@ -1,68 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavBarMed from "../../components/NavBarMed";
+import NavBarMed from "../../../components/NavBarMed";
+import "./index.css";
 
-const Hist = () => {
+const Caixa = () => {
   const navigate = useNavigate();
   const [consultas, setConsultas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const [showNextButton, setShowNextButton] = useState(false);
   const [showPrevButton, setShowPrevButton] = useState(false);
-  const [filtroEmail, setFiltroEmail] = useState('');
-  const [opcoesEmail, setOpcoesEmail] = useState([]);
-  const URL = "http://localhost:8080/t";
+  const [filter, setFilter] = useState("all");
+  const hospital = localStorage.getItem('hospital');
+  const URL = "http://localhost:8080/tr";
+  const myRef = useRef(null);
 
-  const tabelaPacRef = useRef(null); 
-
-  const scrollToRef = () => {
-    if (tabelaPacRef.current) {
-      window.scrollTo(0, tabelaPacRef.current.offsetTop);
+  const scrollToRef = (ref) => {
+    if (ref.current !== null) {
+      window.scrollTo(0, ref.current.offsetTop);
     }
   };
 
-  useEffect(() => {
-    const fetchEmails = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/emails");
-        const emails = response.data;
-        setOpcoesEmail(emails);
-      } catch (error) {
-        console.error("Erro ao obter os e-mails:", error);
-      }
-    };
-  
-    fetchEmails();
-  }, []);
-  
-  const redirectToNewPage = (consultaId) => {
-    navigate(`/informacoes/${consultaId}`); 
-  };
+  const filteredConsultas = consultas.filter(consulta => {
+    if (filter === "all") {
+      return true;
+    } else {
+      return consulta.status.toLowerCase() === filter.toLowerCase();
+    }
+  });
 
-  const handleNextButtonClick = () => {
-    setCurrentPage(prevPage => prevPage + 1);
-    scrollToRef();
-  };
-
-  const handlePrevButtonClick = () => {
-    setCurrentPage(prevPage => prevPage - 1);
-    scrollToRef();
-  };
-
-  const handleInputChange = (e) => {
-    setFiltroEmail(e.target.value);
-  };
-
-  const handleFilterButtonClick = async () => {
-  };
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${URL}/?userId=${filtroEmail}`);
-        const sortedConsultas = response.data.reverse(); 
-        
+        const response = await axios.get(`${URL}/?hospital=${hospital}`);
+        const sortedConsultas = response.data.reverse();
         setConsultas(sortedConsultas);
 
         if (sortedConsultas.length > 0) {
@@ -73,45 +45,63 @@ const Hist = () => {
       }
     };
 
-    if (filtroEmail) {
+    if (hospital) {
       fetchData();
     }
-  }, [filtroEmail]);
+  }, [hospital]);
 
   useEffect(() => {
-    const totalItems = consultas.length;
+    const totalItems = filteredConsultas.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     setShowNextButton(currentPage < totalPages);
     setShowPrevButton(currentPage > 1);
-  }, [consultas, currentPage, itemsPerPage]);
+  }, [filteredConsultas, currentPage, itemsPerPage]);
+
+  const redirectToNewPage = (consultaId) => {
+    navigate(`/Med/${consultaId}`);
+  };
+
+  const handleNextButtonClick = () => {
+    setCurrentPage(prevPage => prevPage + 1);
+    scrollToRef(myRef);
+  };
+
+  const handlePrevButtonClick = () => {
+    setCurrentPage(prevPage => prevPage - 1);
+    scrollToRef(myRef);
+  };
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+    setCurrentPage(1); 
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = consultas.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredConsultas.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div>
-      <NavBarMed/>
-      <h1>Histórico Por Paciente</h1>
-      <div id="filtroContainer">
-        <label htmlFor="filtroEmail">Filtrar por E-mail:</label>
-        <select id="filtroEmail" value={filtroEmail} onChange={handleInputChange}>
-          <option value="">Selecione um e-mail</option>
-          {opcoesEmail.map((email, index) => (
-            <option key={index} value={email}>{email}</option>
-          ))}
+      <NavBarMed />
+      <h1>Caixa de Entrada</h1>
+
+      <div className="filter-container">
+        <label htmlFor="filter">Filtrar por Status:</label>
+        <select id="filter" value={filter} onChange={handleFilterChange}>
+          <option value="all">Todas</option>
+          <option value="pendente">Pendentes</option>
+          <option value="finalizado">Finalizadas</option>
         </select>
-        <button id="filtroButton" onClick={handleFilterButtonClick}>Filtrar</button>
       </div>
-      <table className="tabelaPac" ref={tabelaPacRef}>
+
+      <table className="tabelaPac">
         <thead>
           <tr>
-            <th>Paciente</th>
+            <th>Nome</th>
             <th>Intensidade da Dor</th>
             <th>Local da Dor</th>
             <th>Quanto Tempo está Doendo</th>
             <th>Data da Coleta de Dados</th>
-            <th>Hospital</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -122,13 +112,11 @@ const Hist = () => {
               key={consulta.id}
               onClick={() => redirectToNewPage(consulta.id)}
             >
-
               <td>{consulta.name}</td>
               <td>{consulta.intensidade}</td>
               <td>{consulta.dor}</td>
               <td>{consulta.tempo + " " + consulta.tempo2}</td>
               <td>{consulta.dataAtual}</td>
-              <td>{consulta.Hospital}</td>
               <td>{consulta.status}</td>
             </tr>
           ))}
@@ -146,4 +134,4 @@ const Hist = () => {
   );
 };
 
-export default Hist;
+export default Caixa;

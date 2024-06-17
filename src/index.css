@@ -51,12 +51,6 @@ input{
 label{
   margin-left: 10px;
 }
-.map{
-  height: 100vh;
-}
-.map-marker{
-  margin-top: -30px;
-}
 .tabelaHis{
   width: 80%;
   border-collapse: collapse;

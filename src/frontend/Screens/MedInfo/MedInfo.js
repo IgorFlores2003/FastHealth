@@ -1,20 +1,24 @@
-// InformacoesTriagem.js
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import BackButtonMed from "../../../components/BackButtonMed";
+import "./Medinfo.css";
 
 function InformacoesTriagem() {
-  const { consultaId } = useParams(); // Obtém o ID da consulta da URL
-  const [consulta, setConsulta] = useState(null);
+  const { consultaId } = useParams(); 
+  const [consulta, setConsulta] = useState({ status: "pendente" }); 
+  const [parecer, setParecer] = useState(""); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchConsulta = async () => {
       try {
         const response = await axios.get(
           `http://localhost:8080/test/${consultaId}`
-        ); // Requisição para obter informações da consulta
+        ); 
         setConsulta(response.data);
+
       } catch (error) {
         console.error("Erro ao obter informações da consulta:", error);
       }
@@ -23,8 +27,37 @@ function InformacoesTriagem() {
     fetchConsulta();
   }, [consultaId]);
 
+  const handleParecerChange = (event) => {
+    setParecer(event.target.value);
+  };
+
+  const handleInputChange = (event) => {
+    const minHeight = 50;
+    const lineHeight = parseInt(window.getComputedStyle(event.target).lineHeight);
+    const numLines = Math.ceil(event.target.scrollHeight / lineHeight);
+    const newHeight = Math.max(minHeight, numLines * lineHeight);
+    event.target.style.height = `${newHeight}px`;
+    setParecer(event.target.value);
+  };
+
+  const enviarParecer = async () => {
+    try {
+      if (consulta.status === "pendente") { 
+        await axios.post(`http://localhost:8080/tri/${consultaId}`, { parecer });
+        setConsulta({ ...consulta, status: "finalizado", parecer }); 
+        navigate(-1)
+      } else if (consulta.status === "FINALIZADO") {
+        await axios.put(`http://localhost:8080/t/${consultaId}`, { parecer });
+        setConsulta({ ...consulta, parecer });
+        navigate(-1);
+      }
+    } catch (error) {
+      console.error("Erro ao enviar o parecer:", error);
+    }
+  };
+
   if (!consulta) {
-    return <div className="loading">Carregando...</div>; // Exibe "Carregando..." enquanto as informações estão sendo buscadas
+    return <div className="loading">Carregando...</div>; 
   }
 
   return (
@@ -32,10 +65,6 @@ function InformacoesTriagem() {
       <BackButtonMed />
       <div className="centered-content">
         <h1 className="title">Informações da Coleta:</h1>
-        <div>
-          <h3>ID da Consulta:</h3>
-          <p>{consulta.id}</p>
-        </div>
         <div>
           <h3>Local da Dor:</h3>
           <p>{consulta.dor}</p>
@@ -72,7 +101,17 @@ function InformacoesTriagem() {
           <h3>Descrição: </h3>
           <p>{consulta.descricao || "Não Informado"}</p>
         </div>
-        <p></p>
+        <div>
+          <h3>Parecer: </h3>
+          <textarea 
+            value={parecer} 
+            onChange={handleParecerChange} 
+            onInput={handleInputChange} 
+            maxLength={200} 
+            className="medInput" 
+          />
+          <button onClick={enviarParecer}>Enviar Parecer</button>
+        </div>
       </div>
     </div>
   );

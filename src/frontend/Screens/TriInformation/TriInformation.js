@@ -34,8 +34,8 @@ function Informacoes() {
       <div className="centered-content">
         <h1 className="title">Informações da Coleta de Dados do Paciente:</h1>
         <div>
-          <h3>ID da Consulta:</h3>
-          <p>{consulta.id}</p>
+          <h3>Hospital Atendido:</h3>
+          <p>{consulta.Hospital}</p>
         </div>
         <div>
           <h3>Local da Dor:</h3>
@@ -74,14 +74,13 @@ function Informacoes() {
           </p>
         </div>
         <div>
-          <h3> Hospital Atendido: </h3>
-          <p>{consulta.Hospital || "Não Informado"}</p>
-        </div>
-        <div>
           <h3>Descrição: </h3>
           <p>{consulta.descricao || "Não Informado"}</p>
         </div>
-        <p></p>
+        <div>
+          <h3>Parecer do Médico: </h3>
+          <p>{consulta.parecer || "Pendente"}</p>
+        </div>
       </div>
     </div>
   );

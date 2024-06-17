@@ -19,6 +19,7 @@
     "cpf": "^2.0.1",
     "cpf-cnpj-validator": "^1.0.3",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "leaflet": "^1.9.4",
     "mongodb": "^6.5.0",

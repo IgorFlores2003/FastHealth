@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { validator } from "cpf-cnpj-validator";
 import "../Cadastro/Cadastro.css";
+import RequiredField from "../../../components/RequiredField/required";
 
 function Cadastro() {
   const Joi = require("@hapi/joi").extend(validator);
@@ -20,43 +21,34 @@ function Cadastro() {
     crm: "",
     cpf: "",
     tipoUsuario: "",
-    crmEstado: "", // Novo campo para o estado do CRM
+    crmEstado: "",
   });
 
-  const estadosBrasil = [
-    "AC",
-    "AL",
-    "AP",
-    "AM",
-    "BA",
-    "CE",
-    "DF",
-    "ES",
-    "GO",
-    "MA",
-    "MT",
-    "MS",
-    "MG",
-    "PA",
-    "PB",
-    "PR",
-    "PE",
-    "PI",
-    "RJ",
-    "RN",
-    "RS",
-    "RO",
-    "RR",
-    "SC",
-    "SP",
-    "SE",
-    "TO",
-  ];
+  const [estadosBrasil, setEstadosBrasil] = useState([]);
+
+  useEffect(() => {
+    const fetchEstados = async () => {
+      try {
+        const response = await axios.get("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
+        const siglas = response.data.map(estado => estado.sigla);
+        setEstadosBrasil(siglas);
+      } catch (error) {
+        console.error("Erro ao buscar estados do Brasil:", error);
+      }
+    };
+
+    fetchEstados();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUserForm({ ...userForm, [name]: value });
+    if (value === "medico") {
+      setUserForm({ ...userForm, [name]: value, cpf: "" }); 
+    } else {
+      setUserForm({ ...userForm, [name]: value });
+    }
   };
+
 
   const handleCPFChange = (e) => {
     let { name, value } = e.target;
@@ -70,7 +62,7 @@ function Cadastro() {
   const handleCRMChange = (e) => {
     let { name, value } = e.target;
     value = value.replace(/[^0-9]/g, "");
-    value = value.slice(0, 6); // Limita a 6 dígitos
+    value = value.slice(0, 6);
     setUserForm({ ...userForm, [name]: value });
   };
 
@@ -199,138 +191,141 @@ function Cadastro() {
 
   return (
     <div className="page">
-      <form className="formLogin" onSubmit={handleSubmit}>
-        <h1>Cadastro</h1>
-        <label>Nome:</label>
-        <input
-          type="text"
-          name="name"
-          placeholder="Nome"
-          required
-          value={userForm.name}
-          onChange={handleInputChange}
-        />
-        <br />
-
-        <label>E-mail:</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="E-mail"
-          required
-          value={userForm.email}
-          onChange={handleInputChange}
-        />
-        <br />
-
-        <label>Senha:</label>
-        <input
-          type="password"
-          name="password"
-          placeholder="Senha"
-          required
-          value={userForm.password}
-          onChange={handleInputChange}
-        />
-        <br />
-
-        <label>
+      <div className="formCad">
+        <form className="formLogin" onSubmit={handleSubmit}>
+          <h1>Cadastro</h1>
+          <RequiredField> <label>Nome:</label></RequiredField>
           <input
-            type="radio"
-            name="tipoUsuario"
-            value="medico"
-            checked={userForm.tipoUsuario === "medico"}
+            type="text"
+            name="name"
+            placeholder="Nome"
+            required
+            value={userForm.name}
             onChange={handleInputChange}
           />
-          Médico
-        </label>
-        <label>
+          <br />
+
+          <RequiredField> <label>E-mail:</label></RequiredField>
           <input
-            type="radio"
-            name="tipoUsuario"
-            value="paciente"
-            checked={userForm.tipoUsuario === "paciente"}
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            required
+            value={userForm.email}
             onChange={handleInputChange}
           />
-          Paciente
-        </label>
-        <br />
+          <br />
 
-        {userForm.tipoUsuario === "medico" && (
-          <div>
-            <label>Hospital:</label>
+          <RequiredField><label>Senha:</label></RequiredField>
+          <input
+            type="password"
+            name="password"
+            placeholder="Senha"
+            required
+            value={userForm.password}
+            onChange={handleInputChange}
+          />
+          <br />
+
+          <RequiredField><label>Tipo usuário:</label></RequiredField>
+          <label>
             <input
-              type="text"
-              name="hospital"
-              placeholder="Nome do Hospital"
-              required
-              value={userForm.hospital}
+              type="radio"
+              name="tipoUsuario"
+              value="medico"
+              checked={userForm.tipoUsuario === "medico"}
               onChange={handleInputChange}
             />
-            <br />
-
-            <label>Endereço:</label>
+            Médico
+          </label>
+          <label>
             <input
-              type="text"
-              name="endereco"
-              placeholder="Endereço do Hospital"
-              required
-              value={userForm.endereco}
+              type="radio"
+              name="tipoUsuario"
+              value="paciente"
+              checked={userForm.tipoUsuario === "paciente"}
               onChange={handleInputChange}
             />
-            <br />
+            Paciente
+          </label>
+          <br />
 
-            <div className="crm-container">
-              <label>CRM:</label>
+          {userForm.tipoUsuario === "medico" && (
+            <div>
+              <RequiredField><label>Hospital:</label></RequiredField>
               <input
                 type="text"
-                name="crm"
-                className="crm"
-                placeholder="Inserir CRM"
-                maxLength={6}
+                name="hospital"
+                placeholder="Nome do Hospital"
                 required
-                value={userForm.crm}
-                onChange={handleCRMChange}
-              />
-              <select
-                name="crmEstado"
-                className="crm-estado"
-                required
-                value={userForm.crmEstado}
+                value={userForm.hospital}
                 onChange={handleInputChange}
-              >
-                <option value="">Selecione o Estado</option>
-                {estadosBrasil.map((estado) => (
-                  <option key={estado} value={estado}>
-                    {estado}
-                  </option>
-                ))}
-              </select>
+              />
+              <br />
+
+              <RequiredField><label>Endereço:</label></RequiredField>
+              <input
+                type="text"
+                name="endereco"
+                placeholder="Endereço do Hospital"
+                required
+                value={userForm.endereco}
+                onChange={handleInputChange}
+              />
+              <br />
+
+              <div className="crm-container">
+              <RequiredField> <label>CRM:</label></RequiredField>
+                <input
+                  type="text"
+                  name="crm"
+                  className="crm"
+                  placeholder="Inserir CRM"
+                  maxLength={6}
+                  required
+                  value={userForm.crm}
+                  onChange={handleCRMChange}
+                />
+                <select
+                  name="crmEstado"
+                  className="crm-estado"
+                  required
+                  value={userForm.crmEstado}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Selecione o Estado</option>
+                  {estadosBrasil.map((estado) => (
+                    <option key={estado} value={estado}>
+                      {estado}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {userForm.tipoUsuario === "paciente" && (
-          <div>
-            <label>CPF:</label>
-            <input
-              type="text"
-              name="cpf"
-              id="cpf"
-              placeholder="CPF"
-              maxLength={14}
-              required
-              value={userForm.cpf}
-              onChange={handleCPFChange}
-            />
-            <br />
-          </div>
-        )}
+          {userForm.tipoUsuario === "paciente" && (
+            <div>
+             <RequiredField> <label>CPF:</label></RequiredField>
+              <input
+                type="text"
+                name="cpf"
+                id="cpf"
+                placeholder="CPF"
+                maxLength={14}
+                required
+                value={userForm.cpf}
+                onChange={handleCPFChange}
+              />
+              <br />
+            </div>
+          )}
 
-        <button className="btn" type="submit">
-          Registrar
-        </button>
-      </form>
+          <button className="btn" type="submit">
+            Registrar
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

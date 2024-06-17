@@ -69,6 +69,7 @@ const HistPac = () => {
             <th>Local da Dor</th>
             <th>Data da Coleta de Dados</th>
             <th>Hospital Atendido</th>
+            <th>STATUS</th>
           </tr>
         </thead>
         <tbody>
@@ -83,6 +84,7 @@ const HistPac = () => {
               <td>{consulta.dor}</td>
               <td>{consulta.dataAtual}</td>
               <td>{consulta.Hospital}</td>
+              <td>{consulta.status}</td>
             </tr>
           ))}
         </tbody>

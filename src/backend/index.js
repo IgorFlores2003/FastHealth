@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 const port = 8080;
 
+// Rotas para usuários
 app.get("/", async (req, res) => {
   const users = await User.findAll();
   res.send(users);
@@ -29,7 +30,7 @@ app.post("/", async (req, res) => {
   }
 });
 
-
+// Rotas para triagens
 app.post("/tri", async (req, res) => {
   try {
     const data = { ...req.body };
@@ -45,7 +46,6 @@ app.post("/tri", async (req, res) => {
     return res.status(500).json({ message: 'Erro ao cadastrar triagem. Por favor, tente novamente.' });
   }
 });
-
 
 app.get("/tr", async (req, res) => {
   try {
@@ -88,6 +88,35 @@ app.get("/test/:consultaId", async (req, res) => {
   } catch (error) {
     console.error("Erro ao obter os dados:", error);
     res.status(500).json({ message: "Erro ao obter os dados da triagem" });
+  }
+});
+
+app.post("/tri/:consultaId", async (req, res) => {
+  try {
+    const consulta = await Triagem.findByPk(req.params.consultaId);
+    if (!consulta) {
+      return res.status(404).json({ message: "Triagem não encontrada" });
+    }
+    if (consulta.status === "pendente") {
+      await consulta.update({ parecer: req.body.parecer, status: "FINALIZADO" });
+    }
+    return res.sendStatus(200);
+  } catch (error) {
+    console.error("Erro ao atualizar o parecer e o status:", error);
+    res.status(500).json({ message: "Erro ao atualizar o parecer e o status da triagem" });
+  }
+});
+app.put("/t/:consultaId", async (req, res) => {
+  try {
+    const consulta = await Triagem.findByPk(req.params.consultaId);
+    if (!consulta) {
+      return res.status(404).json({ message: "Triagem não encontrada" });
+    }
+    await consulta.update(req.body);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.error("Erro ao atualizar a triagem:", error);
+    res.status(500).json({ message: "Erro ao atualizar a triagem" });
   }
 });
 

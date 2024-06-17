@@ -1,0 +1,18 @@
+.naveg {
+    text-align: center;
+    background-color: rgb(142, 176, 176);
+    border-style: solid;  
+  }
+  .naveg button{
+    color: black;
+  }
+  .naveg button:hover{
+    color: black;
+  }
+  .loading {
+    text-align: center;
+    margin-top: 50px;
+  }
+  .exit{
+    color: #ad0000;
+  }

@@ -14,7 +14,10 @@ const Triagem = sequelize.define('Triagem', {
   descricao: { type: DataTypes.STRING },
   dataAtual: { type: DataTypes.STRING },
   userId: { type: DataTypes.STRING },
-  name: { type: DataTypes.STRING }
-}, {});
+  parecer: { type: DataTypes.STRING },
+  status: { 
+    type: DataTypes.STRING,
+    defaultValue: 'pendente'},
+  name: { type: DataTypes.STRING }}, {});
 
 module.exports = Triagem;

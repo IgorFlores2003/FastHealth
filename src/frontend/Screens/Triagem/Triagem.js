@@ -5,6 +5,7 @@ import NavBar from "../../../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import "../Triagem/Triagem.css";
+import RequiredField from "../../../components/RequiredField/required";
 
 function Triagem() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function Triagem() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setTriagem({ ...triagem, [name]: value });
+    setTriagem({ ...triagem, [name]: value});
     console.log(triagem);
   };
 
@@ -96,7 +97,7 @@ function Triagem() {
         <h1 className="title">Coleta de Dados do Paciente</h1>
         <form onSubmit={handleSubmit}>
           <div className="op1">
-            <label>Onde está doendo?</label>
+           <RequiredField> <label>Onde está doendo?</label></RequiredField>
             <br />
             <label>
               <input
@@ -160,7 +161,7 @@ function Triagem() {
           <div>
             <br></br>
             <label className="op2">
-              Há quanto tempo está com dor/incômodo?
+            <RequiredField>Há quanto tempo está com dor/incômodo?</RequiredField>
               <br></br>
               <input
                 className="dor_Incomodo"
@@ -183,7 +184,7 @@ function Triagem() {
           <div>
             <br></br>
             <label>
-              Qual a intensidade da dor?
+            <RequiredField>  Qual a intensidade da dor?</RequiredField>
               <br></br>
               <input
                 type="radio"
@@ -284,7 +285,7 @@ function Triagem() {
           </div>
           <div>
             <br></br>
-            <label>Qual hospital irá ser atendido?</label>
+            <RequiredField><label>Qual hospital irá ser atendido?</label></RequiredField>
             <br></br>
             <select
               className="selectOp"
@@ -310,7 +311,7 @@ function Triagem() {
           </div>
           <div>
             <br></br>
-            <label>Descrição (Opcional):</label>
+            <label>Descrição:</label>
             <input
               type="text"
               placeholder="Descreva mais detalhadamente o que está sentindo"

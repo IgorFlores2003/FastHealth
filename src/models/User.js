@@ -9,7 +9,7 @@ const User = sequelize.define('User', {
   hospital: { type: DataTypes.STRING },
   endereco: { type: DataTypes.STRING },
   crm: { type: DataTypes.STRING },
-  cpf: { type: DataTypes.STRING },
+  cpf: { type: DataTypes.INTEGER },
   tipoUsuario: { type: DataTypes.STRING },
   usuarioLogado: { type: DataTypes.STRING }
 }, {
