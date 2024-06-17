@@ -42,13 +42,12 @@ function Cadastro() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (value === "medico") {
+    if (name === "tipoUsuario" && value === "medico") {
       setUserForm({ ...userForm, [name]: value, cpf: "" }); 
     } else {
       setUserForm({ ...userForm, [name]: value });
     }
   };
-
 
   const handleCPFChange = (e) => {
     let { name, value } = e.target;
@@ -81,22 +80,33 @@ function Cadastro() {
       return;
     }
 
-    if (userForm.tipoUsuario === "paciente" && !userForm.cpf) {
-      Swal.fire({
-        icon: "error",
-        title: "CPF não preenchido!",
-        text: "Por favor, preencha o campo CPF.",
-      });
-      return;
-    }
+    if (userForm.tipoUsuario === "paciente") {
+      if (!userForm.cpf) {
+        Swal.fire({
+          icon: "error",
+          title: "CPF não preenchido!",
+          text: "Por favor, preencha o campo CPF.",
+        });
+        return;
+      }
 
-    if (!cpfSchema.validate(userForm.cpf)) {
-      Swal.fire({
-        icon: "error",
-        title: "CPF inválido!",
-        text: "Por favor, insira um CPF válido.",
-      });
-      return;
+      if (userForm.cpf.length !== 14) { 
+        Swal.fire({
+          icon: "error",
+          title: "CPF inválido!",
+          text: "Por favor, insira um CPF válido com 11 dígitos.",
+        });
+        return;
+      }
+
+      if (!cpfSchema.validate(userForm.cpf)) {
+        Swal.fire({
+          icon: "error",
+          title: "CPF inválido!",
+          text: "Por favor, insira um CPF válido.",
+        });
+        return;
+      }
     }
 
     if (!userForm.tipoUsuario) {
@@ -126,34 +136,38 @@ function Cadastro() {
         return;
       }
 
-      const cpfResponse = await axios.get(
-        `http://localhost:8080/?cpf=${userForm.cpf}`
-      );
-      const existingCPF = cpfResponse.data.find(
-        (user) => user.cpf === userForm.cpf
-      );
-      if (existingCPF && userForm.cpf !== "") {
-        Swal.fire({
-          icon: "error",
-          title: "CPF já cadastrado!",
-          text: "O CPF informado já está cadastrado. Por favor, utilize outro CPF.",
-        });
-        return;
+      if (userForm.tipoUsuario === "paciente") {
+        const cpfResponse = await axios.get(
+          `http://localhost:8080/?cpf=${userForm.cpf}`
+        );
+        const existingCPF = cpfResponse.data.find(
+          (user) => user.cpf === userForm.cpf
+        );
+        if (existingCPF) {
+          Swal.fire({
+            icon: "error",
+            title: "CPF já cadastrado!",
+            text: "O CPF informado já está cadastrado. Por favor, utilize outro CPF.",
+          });
+          return;
+        }
       }
 
-      const crmResponse = await axios.get(
-        `http://localhost:8080/?crm=${crmCompleto}`
-      );
-      const existingCRM = crmResponse.data.find(
-        (user) => user.crm === crmCompleto
-      );
-      if (existingCRM && userForm.crm !== "") {
-        Swal.fire({
-          icon: "error",
-          title: "CRM já cadastrado!",
-          text: "O CRM informado já está cadastrado. Por favor, utilize outro CRM.",
-        });
-        return;
+      if (userForm.tipoUsuario === "medico") {
+        const crmResponse = await axios.get(
+          `http://localhost:8080/?crm=${crmCompleto}`
+        );
+        const existingCRM = crmResponse.data.find(
+          (user) => user.crm === crmCompleto
+        );
+        if (existingCRM) {
+          Swal.fire({
+            icon: "error",
+            title: "CRM já cadastrado!",
+            text: "O CRM informado já está cadastrado. Por favor, utilize outro CRM.",
+          });
+          return;
+        }
       }
 
       const newUserForm = { ...userForm, crm: crmCompleto };
